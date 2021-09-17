@@ -14,10 +14,9 @@
                 </div>
             </div>
         </div>
-            <div class="flex gap-3 justify-center">
-                <span class="border-b-2 border-pink-500">Questoes</span>
-                <span class="border-b-2 border-pink-500">Respostas</span>
-                <span class="border-b-2 border-pink-500">Configurações</span>
+            <div class="flex gap-8 justify-center">
+                <span aria-label="Nessa aba você pode criar suas perguntas !" data-balloon-length="medium" data-balloon-pos="down" class="border-b-2 border-pink-500 cursor-pointer">Questoes</span>
+                <span aria-label="Verifique aqui as respotas submetidas ao seu formulário." data-balloon-length="medium" data-balloon-pos="down" class="border-b-2 border-pink-500 cursor-pointer">Respostas</span>
             </div>
     </div>
 
@@ -38,8 +37,12 @@
 
                         <div class="bg-white ml-2 rounded-full">
                             <div class="flex flex-col gap-4 p-2 mt-4">
-                                <img @click="newPergunta" :src="'assets/img/plus.png'" class="w-8 h-8 cursor-pointer" alt="">
-                                <img @click="deletePergunta" :src="'assets/img/minus.png'" class="w-8 h-8 cursor-pointer" alt="">
+                                <div aria-label="Adicionar perguntas" data-balloon-pos="up">
+                                    <img @click="newPergunta" :src="'assets/img/plus.png'" class="w-8 h-8 cursor-pointer" alt="">
+                                </div>
+                                <div aria-label="Remover perguntas" data-balloon-pos="up">
+                                    <img @click="deletePergunta" :src="'assets/img/minus.png'" class="w-8 h-8 cursor-pointer" alt="">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -53,65 +56,47 @@
                             <div class="flex pb-4 gap-4">
                                 <input class="focus:border-black w-full focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Insira sua pergunta">
                             
-                                <select class="rounded-full border-2 border-blue-500 focus:outline-none p-2" name="tipoQuestao" id="">
-                                    <option class="text-center" value="">Multipla escolha</option>
-                                    <option class="text-center" value="">Paragrafo</option>
-                                    <option class="text-center" value="">Checkbox</option>
+                                <select @change="respostaType" class="rounded-full border-2 border-blue-500 focus:outline-none p-2" name="tipoQuestao" id="">
+                                    <option class="text-center" value="multipla">Multipla escolha</option>
+                                    <option class="text-center" value="paragrafo">Paragrafo</option>
+                                    <option class="text-center" value="checkbox">Checkbox</option>
                                 </select>
                             </div>
 
 
                             <!-- Respostas para Multiplaescolha -->
                             
-                            <div class="flex flex-col justify-center gap-4">
+                            <div v-show="isMultiplaEscolha" class="flex flex-col justify-center gap-4">
                                 <div class="flex items-center" id="option">
                                     <img :src="'assets/img/multiplechoice.png'" class="w-5 h-full" alt="">
-                                    <input class="focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Resposta">
+                                    <input class="w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Resposta">
                                 </div>
                                 
-                                <div class="addResposta">
+                                <div class="addResposta" aria-label="Adicionar opção de resposta" data-balloon-pos="down-left">
                                     <img @click="newOption" :src="'assets/img/plus.png'" class="cursor-pointer w-6 mt-8" alt="">
                                 </div>
                             </div> 
 
 
-                            <!-- Respostas para Paragráfo
-                            <div>
+                            <!-- Respostas para Paragráfo-->
+                            <div v-show="isParagrafo">
                                 <div>
-                                    <textarea class="border-2 border-black w-1/2" placeholder="Digite a resposta em forma de texto">
+                                    <textarea class="border-2 border-black w-1/2 p-2 rounded-xl" placeholder="Digite a resposta em forma de texto">
                                     </textarea>
                                 </div>
-                                <div>
-                                    <img @click :src="'assets/img/plus.png'" class="cursor-pointer w-6 mt-8" alt="">
-                                </div>
-                            </div> -->
+                            </div> 
 
 
                             <!-- Resposta para Checkbox -->
-                            <!-- <div class="flex flex-col gap-1">
-                                <div class="flex items-center">
-                                    <input id="option" type="checkbox">
-                                    <label for="option">Opção 1 </label>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <input id="option" type="checkbox">
-                                    <label for="option">Opção 1 </label>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <input id="option" type="checkbox">
-                                    <label for="option">Opção 1 </label>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <input id="option" type="checkbox">
-                                    <label for="option">Opção 1 </label>
+                            <div v-show="isCheckbox" class="flex flex-col gap-1">
+                                <div class="flex items-center space-x-2 checkboxOption">
+                                    <input id="option" class="focus:outline-none" type="checkbox">
+                                    <input class="focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Opcao">
                                 </div>
                                 <div>
-                                    <img :src="'assets/img/plus.png'" class="px-1 py-1" alt="">
+                                    <img @click="newCheckbox" :src="'assets/img/plus.png'" class="cursor-pointer w-6 mt-8" alt="">
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
 
@@ -122,18 +107,17 @@
                         <div class="flex flex-col px-4">
                             <div class="flex pb-4 gap-4">
                                 <input class="focus:border-black w-full focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Insira sua pergunta">
-                            
-                                <select class="rounded-full border-2 border-blue-500 focus:outline-none p-2" name="tipoQuestao" id="">
-                                    <option class="text-center" value="">Multipla escolha</option>
-                                    <option class="text-center" value="">Paragrafo</option>
-                                    <option class="text-center" value="">Checkbox</option>
+                                <select class="rounded-full border-2 border-blue-500 focus:outline-none p-2 selectCopied" name="tipoQuestao" id="">
+                                    <option class="text-center" value="multipla">Multipla escolha</option>
+                                    <option class="text-center" value="paragrafo">Paragrafo</option>
+                                    <option class="text-center" value="checkbox">Checkbox</option>
                                 </select>
                             </div>
 
 
                             <!-- Respostas para Multiplaescolha -->
                             
-                            <div id="optionClone" class="flex flex-col justify-center gap-4">
+                            <div id="optionClone" class="flex-col justify-center gap-4 multipla">
                                 <div class="flex items-center" id="option">
                                     <img :src="'assets/img/multiplechoice.png'" class="w-5 h-full" alt="">
                                     <input class="focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Resposta">
@@ -152,43 +136,26 @@
                                 <img @click="newOption" :src="'assets/img/plus.png'" class="cursor-pointer w-6 mt-8" alt="">
                             </div>
 
-                            <!-- Respostas para Paragráfo
-                            <div>
+                            <!-- Respostas para Paragráfo-->
+                            <div class="paragrafo hidden">
                                 <div>
-                                    <textarea class="border-2 border-black w-1/2" placeholder="Digite a resposta em forma de texto">
+                                    <textarea class="border-2 border-black w-1/2 p-2 rounded-xl" placeholder="Digite a resposta em forma de texto">
                                     </textarea>
                                 </div>
-                                <div>
-                                    <img @click :src="'assets/img/plus.png'" class="cursor-pointer w-6 mt-8" alt="">
-                                </div>
-                            </div> -->
-
+                            </div> 
 
                             <!-- Resposta para Checkbox -->
-                            <!-- <div class="flex flex-col gap-1">
-                                <div class="flex items-center">
-                                    <input id="option" type="checkbox">
-                                    <label for="option">Opção 1 </label>
+                            <div class="flex-col gap-1 checkbox hidden">
+                                <div class="flex items-center space-x-2 checkboxOption">
+                                    <input id="option" class="focus:outline-none" type="checkbox">
+                                    <input class="focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Opcao">
                                 </div>
 
-                                <div class="flex items-center">
-                                    <input id="option" type="checkbox">
-                                    <label for="option">Opção 1 </label>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <input id="option" type="checkbox">
-                                    <label for="option">Opção 1 </label>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <input id="option" type="checkbox">
-                                    <label for="option">Opção 1 </label>
-                                </div>
                                 <div>
-                                    <img :src="'assets/img/plus.png'" class="px-1 py-1" alt="">
+                                    <img @click="newCheckbox" :src="'assets/img/plus.png'" class="newCheckbox cursor-pointer w-6 mt-8" alt="">
                                 </div>
-                            </div> -->
+                            </div>
+
                         </div>
                     </div>
                     <!-- Fim da div para clonagem  -->                    
@@ -206,14 +173,30 @@ export default {
     name:'Formulario',
     data() {
         return {
+            eventname: 'change',
+            isMultiplaEscolha: true,
+            isParagrafo: false,
+            isCheckbox: false,
         }
     },
 
-    mounted() {
-        // document.getElementsByClassName("deleteResposta").addEventListener("click", consoleCLick)
-    },
-
     methods:{
+        respostaType(event) {
+            if (event.target.value == "multipla") {
+                this.isMultiplaEscolha = true
+                this.isParagrafo = false
+                this.isCheckbox = false
+            }else if (event.target.value == "paragrafo") {
+                this.isParagrafo = true
+                this.isMultiplaEscolha = false
+                this.isCheckbox = false
+            }else if (event.target.value == "checkbox") {
+                this.isCheckbox = true
+                this.isParagrafo = false
+                this.isMultiplaEscolha = false
+            }
+        },
+
         newOption(event){
             var container = document.createElement('div')
             container.className = "flex items-center"
@@ -259,7 +242,6 @@ export default {
                 e.target.before(optionClone)
                 document.getElementById("optionCloneErase").className = "hidden justify-center gap-4"
 
-
                 function deleteInput(a) { 
                     a.path[1].remove()
                 }
@@ -267,18 +249,87 @@ export default {
                 document.querySelectorAll(".deleteResposta").forEach(function(element) {
                     element.addEventListener("click", function(e) {deleteInput(e)} )
                 });
+            }
+            
+            var newPerguntaAdd = document.getElementsByClassName("addResposta")
+            newPerguntaAdd[newPerguntaAdd.length-1].children[0].addEventListener("click", function(e) {cloneOption(e)} )
+
+            document.querySelectorAll(".deleteCheckbox").forEach(function(element) {
+                element.addEventListener("click", function(e) {deleteCheckbox(e)} )
+            });
+
+            function changeLocalResponseType(i) {
+                if (i.target.value == "multipla") {
+                    i.path[3].getElementsByClassName("multipla")[0].className = "multipla flex flex-col justify-center gap-4 block"
+                    i.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo hidden"
+                    i.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox hidden"
+                    i.path[3].getElementsByClassName("addResposta")[0].className = "addResposta"
+                }else if (i.target.value == "paragrafo") {
+                    i.path[3].getElementsByClassName("multipla")[0].className = "multipla flex-col justify-center gap-4 hidden  "
+                    i.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo block"
+                    i.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox hidden"
+                    i.path[3].getElementsByClassName("addResposta")[0].className = "addResposta hidden"
+                }else if (i.target.value == "checkbox") {
+                    i.path[3].getElementsByClassName("multipla")[0].className = "multipla flex-col justify-center gap-4 hidden "
+                    i.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo hidden"
+                    i.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox block"
+                    i.path[3].getElementsByClassName("addResposta")[0].className = "addResposta hidden"
+                }
+            }
+
+            document.querySelectorAll(".selectCopied").forEach((element) => {
+                element.addEventListener("change", (i) => {changeLocalResponseType(i)} )
+            });
+
+            function newCheckbox(q) {
+                var checkboxClone = document.getElementsByClassName("checkboxOption")[0].cloneNode(true)
+                var deleteImg = document.createElement("img")
+                deleteImg.src="assets/img/delete.png"
+                deleteImg.className = "w-12 h-full cursor-pointer deleteCheckbox"
+                checkboxClone.appendChild(deleteImg)
+                q.target.before(checkboxClone)
+
+
+                function deleteCheckbox(h) { 
+                    h.path[1].remove()
+                }
+
+                document.querySelectorAll(".deleteCheckbox").forEach(function(element) {
+                    element.addEventListener("click", function(h) {deleteCheckbox(h)} )
+                });
 
             }
 
-            var newPerguntaAdd = document.getElementsByClassName("addResposta")
-            newPerguntaAdd[newPerguntaAdd.length-1].children[0].addEventListener("click", function(e) {cloneOption(e)} )
+            document.querySelectorAll(".newCheckbox").forEach(function(element) {
+                element.addEventListener("click", function(q) {newCheckbox(q)} )
+            });
+
         },
 
         deletePergunta() {
             if ((document.getElementsByClassName("perguntaDivClone").length) > 1) {
                 document.getElementsByClassName("perguntaDivClone")[(document.getElementsByClassName("perguntaDivClone").length) - 1].remove()
             }
-        }
+        },
+
+        newCheckbox (event) {
+            var checkboxClone = document.getElementsByClassName("checkboxOption")[0].cloneNode(true)
+            var deleteImg = document.createElement("img")
+            deleteImg.src="assets/img/delete.png"
+            deleteImg.className = "w-12 h-full cursor-pointer deleteCheckbox"
+            checkboxClone.appendChild(deleteImg)
+            event.target.before(checkboxClone)
+
+
+            function deleteCheckbox(e) { 
+                e.path[1].remove()
+            }
+
+            document.querySelectorAll(".deleteCheckbox").forEach(function(element) {
+                element.addEventListener("click", function(e) {deleteCheckbox(e)} )
+            });
+
+        },
 
     }
 
