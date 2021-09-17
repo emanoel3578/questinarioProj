@@ -1,69 +1,76 @@
 <template>
   <div>
       <!-- Header -->
-      <div class="bg-blue-500 flex justify-around mx-auto my-0">
-          <div class="flex w-1/5 justify-between">
-            <img :src="'assets/img/form.png'" alt="">
-            <span>Formulário sem nome</span>
-          </div>
-
-          <div class="flex justify-end w-3/5">
-            <div class='bg-purple-400'>
-                Enviar formulario
+    <div class="z-10 bg-white w-full h-full flex flex-col ">
+        <div class="flex justify-around items-center mt-3">
+            <div class="flex justify-between items-center">
+                <img :src="'assets/img/form.png'" alt="">
+                <span>Formulário sem nome</span>
             </div>
-          </div>
-      </div>
+
+            <div class="flex justify-end ">
+                <div class='bg-purple-400 rounded-full p-1 '>
+                    Enviar formulario
+                </div>
+            </div>
+        </div>
+            <div class="flex gap-3 justify-center">
+                <span class="border-b-2 border-pink-500">Questoes</span>
+                <span class="border-b-2 border-pink-500">Respostas</span>
+                <span class="border-b-2 border-pink-500">Configurações</span>
+            </div>
+    </div>
 
         <!-- Body -->
-        <div class="bg-gray-500 h-full relative">
-            <div class="flex flex-col h-full justify-center items-center">
-                <div class="bg-white container h-full flex flex-col items-center justify-center">
-                    <!-- Header Menu -->
-                    <div class="flex gap-3 justify-center border-t-6 bg-red-200">
-                        <span class="border-b-2 border-pink-500">Questões</span>
-                        <span class="border-b-2 border-pink-500">Respostas</span>
-                        <span class="border-b-2 border-pink-500">Configurações</span>
-                    </div>
-
-                    <div class="border-4 w-full h-full border-black">
+        <div class="bg-purple-200 absolute inset-x-0 h-full">
+            <div class="flex flex-col w-1/2 h-full mx-auto my-0 items-center">
+                <div class="h-full mt-3 w-full flex flex-col items-center justify-center">
+                    <div class="flex flex-col gap-4 bg-purple-200 w-full h-full">
                         <!-- Titulo do formulario -->
-                        <div class="flex border-4 justify-between border-blue-500 ">
-                            <div class="flex flex-col">
-                                <div class="text-2xl">
-                                    Titulo do fomulario
-                                </div>
 
-                                <div class="text-lg">
-                                    descricao
+                        <div class="flex w-full">
+                            <div class="bg-white flex border-t-8 border-blue-500 justify-between rounded-3xl p-4 w-full">
+                                <div class="flex flex-col text-2xl w-full">
+                                    <input class="text-2xl w-1/2 focus:border-black focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Título">
+                                    <input class="text-lg focus:border-black focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Descrição">
                                 </div>
                             </div>
 
-                            <div class="flex gap-4 mr-4">
-                                <img :src="'assets/img/plus.png'" class="cursor-pointer" alt="">
-                                <img :src="'assets/img/plus.png'" class="cursor-pointer" alt="">
-                                <img :src="'assets/img/plus.png'" class="cursor-pointer" alt="">
+                            <div class="bg-white ml-2 rounded-full">
+                                <div class="flex flex-col gap-4 p-2 mt-4">
+                                    <img :src="'assets/img/plus.png'" class="w-8 h-8 cursor-pointer" alt="">
+                                    <img :src="'assets/img/plus.png'" class="w-8 h-8 cursor-pointer" alt="">
+                                </div>
                             </div>
-
-                            
                         </div>
                         <!-- End titulo -->
 
                         <!-- Corpo do formualario -->
-                        <div class="flex">
-                            <div class="px-8 border-l-8 border-pink-800">
-                                <div class="flex justify-around">
-                                    <div>
-                                        <input type="text" placeholder="Insira sua pergunta">
-                                    </div>
+                        <div class="bg-white rounded-3xl p-4 border-l-8 border-pink-800">
+                            <div class="flex flex-col px-4">
+                                <div class="flex pb-4 gap-4">
+                                    <input class="focus:border-black w-full focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Insira sua pergunta">
+                                
+                                    <select name="tipoQuestao" id="">
+                                        <option value="">Multipla escolha</option>
+                                        <option value="">Paragrafo</option>
+                                        <option value="">Checkbox</option>
+                                    </select>
+                                </div>
 
-                                    <div class="">
-                                        <select name="tipoQuestao" id="">
-                                            <option value="">Multipla escolha</option>
-                                            <option value="">Paragrafo</option>
-                                            <option value="">Checkbox</option>
-                                        </select>
+
+                                <!-- Respostas para Multiplaescolha -->
+                                <div class="flex flex-col justify-center gap-4">
+                                    <div class="flex items-center" id="option">
+                                        <img :src="'assets/img/multiplechoice.png'" class="w-5 h-full" alt="">
+                                        <input class="focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Resposta">
+                                    </div>
+                                    
+                                    <div id="addResposta">
+                                        <img @click="newQuestion" :src="'assets/img/plus.png'" class="cursor-pointer w-6 mt-8" alt="">
                                     </div>
                                 </div>
+
 
                                 <!-- Opção de respostas -->
                                 <!-- Respostas para Paragráfo -->
@@ -76,18 +83,6 @@
                                     </div>
                                 </div> -->
 
-
-                                <!-- Respostas para Multiplaescolha -->
-                                <div>
-                                    <div class="flex" id="option">
-                                        <img :src="'assets/img/multiplechoice.png'" class="px-2 py-1" alt="">
-                                        <input type="text" placeholder="Opção 1">
-                                    </div>
-                                    
-                                    <div id="addResposta">
-                                        <img @click="newQuestion" :src="'assets/img/plus.png'" class="cursor-pointer px-1 py-1" alt="">
-                                    </div>
-                                </div>
 
                                 <!-- Resposta para Checkbox -->
                                 <!-- <div class="flex flex-col gap-1">
@@ -135,24 +130,22 @@ export default {
     },
 
     mounted() {
-        // 
-
         // document.getElementsByClassName("deleteResposta").addEventListener("click", consoleCLick)
-
     },
 
     methods:{
         newQuestion(){
             var container = document.createElement('div')
-            container.className = "flex"
+            container.className = "flex items-center"
             var inputContainer = document.createElement('input')
             inputContainer.placeholder = "Resposta"
+            inputContainer.className = "focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest"
             var imgContainer = document.createElement('img')
             imgContainer.src = "assets/img/multiplechoice.png"
-            imgContainer.className = "px-2 py-1"
+            imgContainer.className = "w-5 h-full"
             var closeContainer = document.createElement('img')
             closeContainer.src = "assets/img/delete.png"
-            closeContainer.className = "px-2 cursor-pointer deleteResposta"
+            closeContainer.className = "w-12 h-full cursor-pointer deleteResposta"
             closeContainer.id = Math.random()
 
             container.appendChild(imgContainer)

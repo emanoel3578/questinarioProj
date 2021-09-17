@@ -171,8 +171,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Formulario',
   data: function data() {
@@ -187,9 +185,10 @@ __webpack_require__.r(__webpack_exports__);
       container.className = "flex";
       var inputContainer = document.createElement('input');
       inputContainer.placeholder = "Resposta";
+      inputContainer.className = "focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest";
       var imgContainer = document.createElement('img');
       imgContainer.src = "assets/img/multiplechoice.png";
-      imgContainer.className = "px-2 py-1";
+      imgContainer.className = "w-5 h-full";
       var closeContainer = document.createElement('img');
       closeContainer.src = "assets/img/delete.png";
       closeContainer.className = "px-2 cursor-pointer deleteResposta";
@@ -583,39 +582,43 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "bg-blue-500 flex justify-around mx-auto my-0" }, [
-      _c("div", { staticClass: "flex w-1/5 justify-between" }, [
-        _c("img", { attrs: { src: "assets/img/form.png", alt: "" } }),
+    _c("div", { staticClass: "z-10 bg-white w-full h-full flex flex-col " }, [
+      _c("div", { staticClass: "flex justify-around items-center mt-3" }, [
+        _c("div", { staticClass: "flex justify-between items-center" }, [
+          _c("img", { attrs: { src: "assets/img/form.png", alt: "" } }),
+          _vm._v(" "),
+          _c("span", [_vm._v("Formulário sem nome")])
+        ]),
         _vm._v(" "),
-        _c("span", [_vm._v("Formulário sem nome")])
+        _vm._m(0)
       ]),
       _vm._v(" "),
-      _vm._m(0)
+      _vm._m(1)
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "bg-gray-500 h-full relative" }, [
+    _c("div", { staticClass: "bg-purple-200 absolute inset-x-0 h-full" }, [
       _c(
         "div",
-        { staticClass: "flex flex-col h-full justify-center items-center" },
+        { staticClass: "flex flex-col w-1/2 h-full mx-auto my-0 items-center" },
         [
           _c(
             "div",
             {
               staticClass:
-                "bg-white container h-full flex flex-col items-center justify-center"
+                "h-full mt-3 w-full flex flex-col items-center justify-center"
             },
             [
-              _vm._m(1),
-              _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "border-4 w-full h-full border-black" },
+                {
+                  staticClass: "flex flex-col gap-4 bg-purple-200 w-full h-full"
+                },
                 [
                   _c(
                     "div",
                     {
                       staticClass:
-                        "flex border-4 justify-between border-blue-500 "
+                        "bg-white flex border-t-8 justify-between border-blue-500 rounded-3xl p-4"
                     },
                     [
                       _vm._m(2),
@@ -639,43 +642,58 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "flex" }, [
-                    _c(
-                      "div",
-                      { staticClass: "px-8 border-l-8 border-pink-800" },
-                      [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "bg-white rounded-3xl p-4 border-l-8 border-pink-800"
+                    },
+                    [
+                      _c("div", { staticClass: "flex flex-col px-4" }, [
                         _vm._m(3),
                         _vm._v(" "),
-                        _c("div", [
-                          _c(
-                            "div",
-                            { staticClass: "flex", attrs: { id: "option" } },
-                            [
+                        _c(
+                          "div",
+                          { staticClass: "flex flex-col justify-center gap-4" },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "flex items-center",
+                                attrs: { id: "option" }
+                              },
+                              [
+                                _c("img", {
+                                  staticClass: "w-5 h-full",
+                                  attrs: {
+                                    src: "assets/img/multiplechoice.png",
+                                    alt: ""
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("input", {
+                                  staticClass:
+                                    "focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest",
+                                  attrs: {
+                                    type: "text",
+                                    placeholder: "Resposta"
+                                  }
+                                })
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { attrs: { id: "addResposta" } }, [
                               _c("img", {
-                                staticClass: "px-2 py-1",
-                                attrs: {
-                                  src: "assets/img/multiplechoice.png",
-                                  alt: ""
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("input", {
-                                attrs: { type: "text", placeholder: "Opção 1" }
+                                staticClass: "cursor-pointer w-6 mt-8",
+                                attrs: { src: "assets/img/plus.png", alt: "" },
+                                on: { click: _vm.newQuestion }
                               })
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { attrs: { id: "addResposta" } }, [
-                            _c("img", {
-                              staticClass: "cursor-pointer px-1 py-1",
-                              attrs: { src: "assets/img/plus.png", alt: "" },
-                              on: { click: _vm.newQuestion }
-                            })
-                          ])
-                        ])
-                      ]
-                    )
-                  ])
+                            ])
+                          ]
+                        )
+                      ])
+                    ]
+                  )
                 ]
               )
             ]
@@ -690,9 +708,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex justify-end w-3/5" }, [
-      _c("div", { staticClass: "bg-purple-400" }, [
-        _vm._v("\n              Enviar formulario\n          ")
+    return _c("div", { staticClass: "flex justify-end " }, [
+      _c("div", { staticClass: "bg-purple-400 rounded-full p-1 " }, [
+        _vm._v("\n                  Enviar formulario\n              ")
       ])
     ])
   },
@@ -700,23 +718,19 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "flex gap-3 justify-center border-t-6 bg-red-200" },
-      [
-        _c("span", { staticClass: "border-b-2 border-pink-500" }, [
-          _vm._v("Questões")
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "border-b-2 border-pink-500" }, [
-          _vm._v("Respostas")
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "border-b-2 border-pink-500" }, [
-          _vm._v("Configurações")
-        ])
-      ]
-    )
+    return _c("div", { staticClass: "flex gap-3 justify-center" }, [
+      _c("span", { staticClass: "border-b-2 border-pink-500" }, [
+        _vm._v("Questoes")
+      ]),
+      _vm._v(" "),
+      _c("span", { staticClass: "border-b-2 border-pink-500" }, [
+        _vm._v("Respostas")
+      ]),
+      _vm._v(" "),
+      _c("span", { staticClass: "border-b-2 border-pink-500" }, [
+        _vm._v("Configurações")
+      ])
+    ])
   },
   function() {
     var _vm = this
@@ -740,21 +754,19 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex justify-around" }, [
-      _c("div", [
-        _c("input", {
-          attrs: { type: "text", placeholder: "Insira sua pergunta" }
-        })
-      ]),
+    return _c("div", { staticClass: "flex pb-4 gap-4" }, [
+      _c("input", {
+        staticClass:
+          "focus:border-black w-full focus:outline-none border-b-2 py-2 px-3 text-grey-darkest",
+        attrs: { type: "text", placeholder: "Insira sua pergunta" }
+      }),
       _vm._v(" "),
-      _c("div", {}, [
-        _c("select", { attrs: { name: "tipoQuestao", id: "" } }, [
-          _c("option", { attrs: { value: "" } }, [_vm._v("Multipla escolha")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "" } }, [_vm._v("Paragrafo")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "" } }, [_vm._v("Checkbox")])
-        ])
+      _c("select", { attrs: { name: "tipoQuestao", id: "" } }, [
+        _c("option", { attrs: { value: "" } }, [_vm._v("Multipla escolha")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "" } }, [_vm._v("Paragrafo")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "" } }, [_vm._v("Checkbox")])
       ])
     ])
   }
