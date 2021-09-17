@@ -1,10 +1,5 @@
 <template>
     <div>
-        <!-- Navbar -->
-        <div class="flex">
-        </div>
-
-
         <div>
             <router-view>
 
