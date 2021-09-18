@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Question;
+use App\Http\Requests\StoreQuestionRequest;
 
 class QuestionsController extends Controller
 {
@@ -13,7 +15,7 @@ class QuestionsController extends Controller
      */
     public function index()
     {
-        //
+        return Question::all();
     }
 
     /**
@@ -23,7 +25,7 @@ class QuestionsController extends Controller
      */
     public function create()
     {
-        //
+        // 
     }
 
     /**
@@ -32,9 +34,9 @@ class QuestionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreQuestionRequest $request)
     {
-        //
+        return Question::create($request->all());
     }
 
     /**
@@ -45,7 +47,7 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        //
+        return Question::find($id);
     }
 
     /**
@@ -68,7 +70,9 @@ class QuestionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $question = Question::find($id);
+        $question->update($request->all());
+        return $question;
     }
 
     /**
@@ -79,6 +83,17 @@ class QuestionsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return Question::destroy($id);
+    }
+
+    /**
+     * Sarch the specified name.
+     *
+     * @param  string  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function search($titulo)
+    {
+        return Question::where('titulo', 'like', '%'.$titulo.'%')->get();
     }
 }
