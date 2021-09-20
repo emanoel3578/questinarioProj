@@ -20,7 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/questions', [QuestionsController::class, "store"])->middleware("auth:sanctum");
+
 // Route::post('/questions', [QuestionsController::class, "store"]);
 Route::get('/questions/search/{titulo}', [QuestionsController::class, "search"]);
 
-Route::resource('questions', QuestionsController::class);
+// Route::resource('questions', QuestionsController::class);
