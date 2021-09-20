@@ -29,9 +29,10 @@ class AppServiceProvider extends ServiceProvider
         //     return view('welcome');
         // });
 
-        Fortify::registerView(function(){
-            return view('register');
-        });
+        // Fortify::registerView(function(){
+        //     return view('register');
+        // });
+        
         Schema::defaultStringLength(191);
     }
 }

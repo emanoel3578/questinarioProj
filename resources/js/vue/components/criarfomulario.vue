@@ -9,7 +9,7 @@
             </div>
 
             <div class="flex justify-end ">
-                <div class='bg-purple-400 rounded-full p-2 '>
+                <div @click="sendFormulario" class='cursor-pointer bg-purple-400 rounded-full p-2 '>
                     Enviar formulario
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     <div v-show="questionShow" class="flex flex-col gap-4 mb-8">
                         <div class="flex w-full ">
                             <div class="bg-white flex border-t-8 border-blue-500 justify-between rounded-3xl p-4 w-full">
-                                <div class="flex flex-col text-2xl w-full">
+                                <div class="flex flex-col text-2xl w-full infoFormulario">
                                     <input class="text-2xl w-1/2 focus:border-black focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Título">
                                     <input class="text-lg focus:border-black focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Descrição">
                                 </div>
@@ -52,13 +52,13 @@
                         <!-- Corpo do formualario -->
 
                         <!-- Div que apareçe para o usuario -->
-                        <div id="perguntaDivOriginal" class="bg-white rounded-3xl p-4 border-l-8 border-pink-800 mb-5">
+                        <div id="perguntaDivOriginal" class="bg-white relative rounded-3xl p-4 border-l-8 border-pink-800 mb-5 infoFormulario">
                             <div class="flex flex-col px-4">
                                 <div class="flex pb-4 gap-4">
                                     <input class="focus:border-black w-full focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Insira sua pergunta">
                                 
-                                    <select @change="respostaType" class="rounded-full border-2 border-blue-500 focus:outline-none p-2" name="tipoQuestao" id="">
-                                        <option class="text-center" value="multipla">Multipla escolha</option>
+                                    <select @change="respostaType" class="rounded-full border-2 border-blue-500 focus:outline-none p-2" name="tipoQuestao" id="tipoQuestao">
+                                        <option selected class="text-center" value="multipla">Multipla escolha</option>
                                         <option class="text-center" value="paragrafo">Paragrafo</option>
                                         <option class="text-center" value="checkbox">Checkbox</option>
                                     </select>
@@ -98,18 +98,24 @@
                                         <img @click="newCheckbox" :src="'assets/img/plus.png'" class="cursor-pointer w-6 mt-8" alt="">
                                     </div>
                                 </div>
+
+                                <div class="absolute bottom-5 right-5">
+                                    <button @click="sendFormulario" class="bg-blue-500 rounded-3xl p-2 text-white">
+                                        Salvar !
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
 
 
                         <!-- Div escondida para clonagem, o usuario não altera ela -->
-                        <div id="perguntaDiv" class="bg-white rounded-3xl p-4 border-l-8 border-pink-800 perguntaDivClone hidden">
+                        <div id="perguntaDiv" class="bg-white rounded-3xl p-4 border-l-8 border-pink-800 perguntaDivClone infoFormulario hidden">
                             <div class="flex flex-col px-4">
                                 <div class="flex pb-4 gap-4">
                                     <input class="focus:border-black w-full focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Insira sua pergunta">
-                                    <select class="rounded-full border-2 border-blue-500 focus:outline-none p-2 selectCopied" name="tipoQuestao" id="">
-                                        <option class="text-center" value="multipla">Multipla escolha</option>
+                                    <select class="rounded-full border-2 border-blue-500 focus:outline-none p-2 selectCopied" name="tipoQuestao" id="tipoQuestao">
+                                        <option selected class="text-center" value="multipla">Multipla escolha</option>
                                         <option class="text-center" value="paragrafo">Paragrafo</option>
                                         <option class="text-center" value="checkbox">Checkbox</option>
                                     </select>
@@ -184,9 +190,9 @@
                                                     Aceitar respostas:
                                                 </div>
                                                 <div>
-                                                    <label class="switch">
-                                                    <input type="checkbox" id="togBtn">
-                                                    <div class="slider round"></div>
+                                                    <label class="switch relative inline-block w-16 h-10">
+                                                            <input type="checkbox" checked>
+                                                            <span class="slider cursor-pointer inset-0 absolute round rounded-full"></span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -196,57 +202,219 @@
                                     <div>
                                         <div class="flex justify-between px-4 pb-2">
                                             <div class="border-b-2 border-purple-800">
-                                                <span>
-                                                    Summary
-                                                </span>
+                                                <span @click="changeShowRepostasTab" class="cursor-pointer">Resumo</span>
                                             </div>
 
                                             <div class="border-b-2 border-purple-800">
-                                                <span>
-                                                    Question
-                                                </span>
+                                                <span @click="changeShowRepostasTab" class="cursor-pointer">Por questão</span>
                                             </div>
 
                                             <div class="border-b-2 border-purple-800">
-                                                <span>
-                                                    Individual
-                                                </span>
+                                                <span @click="changeShowRepostasTab" class="cursor-pointer">Individual</span>
                                             </div>
                                         </div>
                                     </div>
                                     
                                 </div>
-                                
-                                <!-- Perguntas -->
-                                <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
-                                    <div class="pb-6">
-                                        <div class="text-2xl">
-                                            A pergunta em si 1 
+
+                                <!-- Summary -->
+                                <div v-show="resumoShow" class="flex flex-col gap-6 mb-8">
+                                    <!-- Perguntas -->
+                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
+                                        <div class="pb-6">
+                                            <div class="text-2xl">
+                                                A pergunta em si 1 
+                                            </div>
+
+                                            <div class="text-sm">
+                                                O tanto de respostas para essa pergunta
+                                            </div>
                                         </div>
 
-                                        <div class="text-sm">
-                                            O tanto de respostas para essa pergunta
+                                        <div>
+                                            <div>
+                                                <apexchart width="380" type="donut" :options="chartOptions" :series="series"></apexchart>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div>
-                                        Grafico
+                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
+                                        <div class="pb-6">
+                                            <div class="text-2xl">
+                                                A pergunta em si 1 
+                                            </div>
+
+                                            <div class="text-sm">
+                                                O tanto de respostas para essa pergunta
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            Grafico
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
-                                    <div class="pb-6">
-                                        <div class="text-2xl">
-                                            A pergunta em si 1 
+                                <!-- Questões porQuestao -->
+                                <div v-show="porQuestaoShow" class="flex flex-col gap-6 mb-8">
+                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
+                                        <div class="w-full">
+                                            <select name="" id="" class="w-full p-2">
+                                                <option value=""> Pergunta 1</option>
+                                                <option value=""> Pergunta 2</option>
+                                                <option value=""> Pergunta 3</option>
+                                            </select>
                                         </div>
 
-                                        <div class="text-sm">
-                                            O tanto de respostas para essa pergunta
+                                        
+                                    </div>
+
+                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
+                                        <div>
+                                            Pergunta 1 Pergunta 1 Pergunta 1 Pergunta 1 Pergunta 1
                                         </div>
                                     </div>
 
-                                    <div>
-                                        Grafico
+                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
+                                        <div class="border-b-2 w-full mb-2">
+                                            Opcao 1 Opcao 1 Opcao 1 Opcao 1 Opcao 1 Opcao 1
+                                        </div>
+
+                                        <div class="flex text-sm gap-2">
+                                            <div>
+                                                14
+                                            </div>
+                                            
+                                            <div>
+                                                Respostas
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Final porQuestão -->
+                                <div v-show="individualShow" class="flex flex-col gap-6 mb-8">
+                                    <!-- Individuais -->
+                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
+                                        <div class="flex justify-center items-center">
+
+                                            <div class="flex items-center pt-2">
+                                                <div>
+                                                    Pesquisar:
+                                                </div>
+
+                                                <div>
+                                                    <input type="text" class="focus:border-black focus:outline-none border-b-2 px-3 text-grey-darkest">
+                                                </div>
+                                            </div>
+
+                                            <div class="flex">
+                                                <div>
+                                                    <select name="" id="">
+                                                        <option value="">Rafael Oliveira dos Santos</option>
+                                                        <option value="">Iury Oliveira</option>
+                                                        <option value="">Julia Passos Neves</option>
+                                                        <option value="">Camila Moura da Silva</option>
+                                                        <option value="">Emanoel Cardoso Pereira</option>
+                                                    </select>
+                                                        
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Formulario no individual -->
+                                
+                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
+                                        <div class="p-4 gap-1">
+
+                                            <div class="text-xs text-gray-700">
+                                                Repostas não podem ser editadas
+                                            </div>
+
+                                            <div class="text-2xl">
+                                                Titulo do formulario
+                                            </div>
+                                            
+                                            <div class="text-sm">
+                                                Descriçao do Formulario Descriçao do Formulario Descriçao do Formulario Descriçao do Formulario
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
+                                        <!-- Questão de multipla escolha -->
+                                        <div class="p-4">
+                                            <div>
+                                                Titulo da questão
+                                            </div>
+                                            
+                                            <div>
+                                                <div class="flex flex-col gap-3 py-2">
+                                                    <div>
+                                                        <input type="radio" name="questaoID">
+                                                        <label for="questaoID">Opção 1</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="radio" name="questaoID">
+                                                        <label for="questaoID">Opção 1</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="radio" name="questaoID">
+                                                        <label for="questaoID">Opção 1</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="radio" name="questaoID">
+                                                        <label for="questaoID">Opção 1</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="radio" name="questaoID">
+                                                        <label for="questaoID">Opção 1</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Questão de paragráfo -->
+                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
+                                        <div class="p-4">
+                                            <p class="text-black text-2xl">
+                                                Pergunta atual sobre as opçoes
+                                            </p>
+                                            <div class="flex flex-col gap-3 py-2">
+                                                <textarea name="respostaParagrafo" class="p-2 border-black border-2 focus:outline-none focus:border-blue-500" disabled id="" cols="20" rows="5" placeholder="Digite sua resposta">
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Questão de Checkbox  -->
+                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
+                                        <div class="p-4">
+                                            <p class="text-black text-2xl">
+                                                Pergunta atual sobre as opçoes
+                                            </p>
+                                            <div class="flex flex-col gap-3 py-2">
+                                                <div>
+                                                    <input type="checkbox" name="questaoCheckboxID">
+                                                    <label for="questaoCheckboxID">Opção 1</label>
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" name="questaoCheckboxID">
+                                                    <label for="questaoCheckboxID">Opção 1</label>
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" name="questaoCheckboxID">
+                                                    <label for="questaoCheckboxID">Opção 1</label>
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" name="questaoCheckboxID">
+                                                    <label for="questaoCheckboxID">Opção 1</label>
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -261,24 +429,145 @@
 </template>
 
 <script>
+import ExampleComponentVue from '../../../../vendor/laravel/ui/src/Presets/vue-stubs/ExampleComponent.vue'
 
 export default {
     name:'Formulario',
-    data() {
+    data () {
         return {
+            chartOptions: {
+                theme:{
+                    palette: "palette3"
+                }
+            },
+            series: [44, 55, 41, 17, 15],
             eventname: 'change',
             isMultiplaEscolha: true,
             isParagrafo: false,
             isCheckbox: false,
             questionShow: true,
             respostaShow: false,
+            resumoShow:true,
+            porQuestaoShow:false,
+            individualShow:false,
+            infoFormulario: [],
+            formData:{
+                email:'emanoel97@hotmail.com',
+                password: 'Manel123'
+            },
+            createFormulario:{
+                nomeFormulario:'',
+                titulo:'',
+                descricao:'',
+                pergunta:'',
+                ndeperguntas:'1',
+                tipodepergunta:'',
+                ownerId:'',
+            }
         }
     },
 
+    created() {
+        axios.get('/sanctum/csrf-cookie').then(response => {})
+    },   
+
     methods:{
 
+        sendFormulario (event) {
+            // console.log(event.path[2].getElementsByTagName('input'))
+            
+            var dataHtml = document.getElementsByClassName("infoFormulario")
+            for(var i=0; i < dataHtml.length; i++) {
+                if (i==0) {
+                    var titleAndDescription = dataHtml[i].getElementsByTagName('input')
+                    this.createFormulario.nomeFormulario = titleAndDescription[0].value
+                    this.createFormulario.titulo = titleAndDescription[0].value
+                    this.createFormulario.descricao = titleAndDescription[0].value
+                }
+            }
+
+            this.createFormulario.pergunta = event.path[2].getElementsByTagName('input')[0].value
+            for(var i=0; i < event.path[2].getElementsByTagName('input').length; i++) {
+                if (event.path[2].getElementsByTagName('input')[i].value != "" && event.path[2].getElementsByTagName('input')[i].value != "on" && event.path[2].getElementsByTagName('input')[i].placeholder != "Insira sua pergunta"){
+                    this.createFormulario[`opcao${i}`] = event.path[2].getElementsByTagName('input')[i].value
+                }
+            }
+
+            console.log(this.createFormulario)
+            // console.log(nomePergunta)
+            // var dataHtml = document.getElementsByClassName("infoFormulario")
+            // var inputsTotal = [];
+            // var select = document.getElementById('tipoQuestao');
+            // var counter = 0
+            // // console.log(select)
+            // for(var i=0; i < dataHtml.length; i++) {
+                
+            //     if (i==0) {
+            //         var titleAndDescription = dataHtml[i].getElementsByTagName('input')
+            //         this.createFormulario.nomeFormulario = titleAndDescription[0].value
+            //         this.createFormulario.titulo = titleAndDescription[0].value
+            //         this.createFormulario.descricao = titleAndDescription[0].value
+            //         // console.log(this.createFormulario)
+            //     }
+
+            //     if (i == 2) {
+            //         continue
+            //     }
+
+            //     if (i >= 1) {
+            //         var select = dataHtml[i].getElementsByTagName('select')
+            //         var selected = select[0].selectedOptions
+            //         // selected[0].value == "multipla"
+            //         // console.log(dataHtml[i].getElementsByTagName('input'))
+            //         var emptyArr = []
+            //         inputsTotal.push(emptyArr)
+            //         inputsTotal[counter].push(dataHtml[i].getElementsByTagName('input'))
+            //         // inputsTotal[counter].push(dataHtml[i].getElementsByTagName('input'))
+            //         // console.log(inputsTotal)
+            //         counter++
+            //     }
+                
+
+            // }
+
+            // var CleanedInput = []
+            // // console.log(inputsTotal)
+            // for(var a=0; a < inputsTotal.length; a++) {
+            //     console.log(inputsTotal[a][0])
+            // }
+            // // axios.post('/api/question', this.createFormulario).then(res=>{
+
+            // // })
+        },
+
+        getUser () {
+            axios.get('/api/user').then(res => {
+                ownerId = res.data.id
+
+
+            }).catch(function (error){
+                if (error.response) {
+                // Request made and server responded
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+                } else if (error.request) {
+                // The request was made but no response was received
+                console.log(error.request);
+                } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+                }
+            })
+        },
+
+        handleLogin () {
+            axios.post('/login', this.formData).then(response => {
+                this.getUser();
+            })
+        },
+
         changeShowDiv(event) {
-            console.log(event.target.innerHTML)
             if (event.target.innerHTML == "Questões") {
                 this.questionShow = true;
                 this.respostaShow = false;
@@ -288,7 +577,22 @@ export default {
             }
         },
 
+        changeShowRepostasTab(event) {
+            if (event.target.innerHTML == "Resumo") {
+                this.resumoShow = true
+                this.porQuestaoShow = false
+                this.individualShow = false
+            }else if (event.target.innerHTML == "Por questão"){
+                this.resumoShow =false
+                this.porQuestaoShow = true
+                this.individualShow = false
+            }else if (event.target.innerHTML == "Individual") {
+                this.resumoShow = false
+                this.porQuestaoShow = false
+                this.individualShow = true
+            }
 
+        },
 
         respostaType(event) {
             if (event.target.value == "multipla") {
@@ -342,7 +646,7 @@ export default {
 
         newPergunta() {
             var perguntaDivClone = document.getElementsByClassName("perguntaDivClone")[0].cloneNode(true)
-            perguntaDivClone.className = "bg-white rounded-3xl p-4 border-l-8 border-pink-800 perguntaDivClone"
+            perguntaDivClone.className = "bg-white rounded-3xl p-4 border-l-8 border-pink-800 perguntaDivClone infoFormulario"
             document.getElementsByClassName("perguntaDivClone")[document.getElementsByClassName("perguntaDivClone").length - 1].after(perguntaDivClone)
 
             function cloneOption (e) {
@@ -446,71 +750,42 @@ export default {
 </script>
 
 <style scoped>
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 90px;
-  height: 34px;
-}
-
-.switch input {display:none;}
-
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #4293f5;
+  background-color: #ccc;
   -webkit-transition: .4s;
   transition: .4s;
-   border-radius: 34px;
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
+  height: 2rem;
+  width: 2rem;
   left: 4px;
   bottom: 4px;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
-  border-radius: 50%;
 }
 
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
 input:checked + .slider {
-  background-color: #2ab934;
+  background-color: #2196F3;
 }
 
 input:focus + .slider {
   box-shadow: 0 0 1px #2196F3;
 }
-
 input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
-  transform: translateX(55px);
+  transform: translateX(26px);
 }
-
-/*------ ADDED CSS ---------*/
-.slider:after
-{
- content:'OFF';
- color: white;
- display: block;
- position: absolute;
- transform: translate(-50%,-50%);
- top: 50%;
- left: 50%;
- font-size: 10px;
- font-family: Verdana, sans-serif;
-}
-
-input:checked + .slider:after
-{  
-  content:'ON';
+.slider.round:before {
+  border-radius: 50%;
 }
 </style>
