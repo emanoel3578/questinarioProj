@@ -196,19 +196,19 @@
                                     <div>
                                         <div class="flex justify-between px-4 pb-2">
                                             <div class="border-b-2 border-purple-800">
-                                                <span>
+                                                <span class="cursor-pointer">
                                                     Summary
                                                 </span>
                                             </div>
 
                                             <div class="border-b-2 border-purple-800">
-                                                <span>
+                                                <span class="cursor-pointer">
                                                     Question
                                                 </span>
                                             </div>
 
                                             <div class="border-b-2 border-purple-800">
-                                                <span>
+                                                <span class="cursor-pointer">
                                                     Individual
                                                 </span>
                                             </div>
@@ -216,40 +216,60 @@
                                     </div>
                                     
                                 </div>
-                                
-                                <!-- Perguntas -->
-                                <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
-                                    <div class="pb-6">
-                                        <div class="text-2xl">
-                                            A pergunta em si 1 
+
+                                <!-- Summary -->
+                                <div v-show="resumoShow">
+                                    <!-- Perguntas -->
+                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
+                                        <div class="pb-6">
+                                            <div class="text-2xl">
+                                                A pergunta em si 1 
+                                            </div>
+
+                                            <div class="text-sm">
+                                                O tanto de respostas para essa pergunta
+                                            </div>
                                         </div>
 
-                                        <div class="text-sm">
-                                            O tanto de respostas para essa pergunta
+                                        <div>
+                                            <div>
+                                                <apexchart width="380" type="donut" :options="chartOptions" :series="series"></apexchart>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div>
-                                        Grafico
+                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
+                                        <div class="pb-6">
+                                            <div class="text-2xl">
+                                                A pergunta em si 1 
+                                            </div>
+
+                                            <div class="text-sm">
+                                                O tanto de respostas para essa pergunta
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            Grafico
+                                        </div>
                                     </div>
                                 </div>
 
+                                <!--  -->
                                 <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
-                                    <div class="pb-6">
-                                        <div class="text-2xl">
-                                            A pergunta em si 1 
-                                        </div>
-
-                                        <div class="text-sm">
-                                            O tanto de respostas para essa pergunta
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        Grafico
+                                    <div class="w-full">
+                                        <select name="" id="" class="w-full p-2">
+                                            <option value=""> Pergunta 1</option>
+                                            <option value=""> Pergunta 2</option>
+                                            <option value=""> Pergunta 3</option>
+                                        </select>
                                     </div>
                                 </div>
+
+
+
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -266,12 +286,19 @@ export default {
     name:'Formulario',
     data() {
         return {
+            chartOptions: {
+                theme:{
+                    palette: "palette3"
+                }
+            },
+            series: [44, 55, 41, 17, 15],
             eventname: 'change',
             isMultiplaEscolha: true,
             isParagrafo: false,
             isCheckbox: false,
             questionShow: true,
             respostaShow: false,
+            resumoShow:false, 
         }
     },
 
