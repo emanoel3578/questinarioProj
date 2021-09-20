@@ -17,6 +17,10 @@ Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');
 
+// Route::get('/register', function() {
+//     return view('register');
+// });
+
 // Route::get('/home', function() {
 //     return view('welcome');
 // });

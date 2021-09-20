@@ -49,20 +49,86 @@
                             </div>
 
                             <div class="cursor-pointer text-white bg-blue-500 rounded-full p-2">
-                                Responder !
+                                <a href="http://questinario.com/formulario">
+                                    Responder !
+                                </a>
                             </div>
                         </div>
                     </div>    
 
                     <div class="bg-white rounded-full w-full p-4">
                         <div class="flex justify-around items-center">
-                            <div class="flex flex-col w-full">
-                                <input  class="w-full" name="email" type="text" placeholder="Login Email">
-                                <input  @model:"formData.password" name="password" class="w-full" type="text" placeholder="Password">
-                                <button @click="handleLogin" class="rounder-full p-2 border-blue-400 border-2">Verificar Login</button>
+                            <div>
+                                <p class="text-black text-2xl">
+                                    Titulo do formulario 2
+                                </p>
+                                <p class="text-black text-sm">
+                                    Descricao do formulario 2
+                                </p>
+                                <p class="text-black text-xs">
+                                    Autor: Direção
+                                </p>
+                            </div>
+
+                            <div class="text-center">
+                                <p>
+                                    Data de criação:
+                                </p>
+                                <p class="text-sm">
+                                     21/08/2021
+                                </p>
+                            </div>
+
+                            <div class="cursor-pointer text-white bg-blue-500 rounded-full p-2">
+                                <a href="http://questinario.com/formulario">
+                                    Responder !
+                                </a>
                             </div>
                         </div>
-                    </div>  
+                    </div>   
+
+                    <div class="bg-white rounded-full w-full p-4">
+                        <div class="flex justify-around items-center">
+                            <div>
+                                <p class="text-black text-2xl">
+                                    Titulo do formulario 3
+                                </p>
+                                <p class="text-black text-sm">
+                                    Descricao do formulario 3
+                                </p>
+                                <p class="text-black text-xs">
+                                    Autor: Direção
+                                </p>
+                            </div>
+
+                            <div class="text-center">
+                                <p>
+                                    Data de criação:
+                                </p>
+                                <p class="text-sm">
+                                     21/08/2021
+                                </p>
+                            </div>
+
+                            <div class="cursor-pointer text-white bg-blue-500 rounded-full p-2">
+                                <a href="http://questinario.com/formulario">
+                                    Responder !
+                                </a>
+                            </div>
+                        </div>
+                    </div>   
+                    
+                    <!-- <div class="bg-black">
+                        <div class="bg-white absolute rounded-full w-full p-4">
+                            <div class="flex justify-around items-center">
+                                <div class="flex flex-col w-full">
+                                    <input  v-model="formData.email" class="w-full" name="email" type="text" placeholder="Login Email">
+                                    <input  v-model="formData.password" name="password" class="w-full" type="text" placeholder="Password">
+                                    <button @click="handleLogin" class="rounder-full p-2 border-blue-400 border-2">Verificar Login</button>
+                                </div>
+                            </div>
+                        </div>  
+                    </div> -->
                                
                 </div>
             </div>
@@ -83,8 +149,8 @@ export default {
             isParagrafo: false,
             isCheckbox: false,
             formData:{
-                email: 'emanoel357@gmail.com',
-                password: 'Manel123'
+                email: '',
+                password: ''
             }
             
         }
@@ -92,7 +158,7 @@ export default {
 
     created() {
         axios.get('/sanctum/csrf-cookie').then(response => {
-            this.getUser()
+            // this.getUser()
         })
     },      
 

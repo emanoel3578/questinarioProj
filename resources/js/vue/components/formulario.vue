@@ -29,7 +29,25 @@
                                 </p>
                             </div>
                         </div>
-                    </div>    
+                    </div>
+
+                    <div class="bg-white rounded-b-xl rounded-t-2xl border-t-8 border-purple-500 w-full p-4">
+                        <div class="flex items-center w-full">
+                            <div class="flex justify-between w-full">
+
+                                <div class="">
+                                    <label for="nomeCompleto">Nome completo:</label>
+                                    <input type="text" class="focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" name="nomeCompleto" id="">
+                                </div>
+
+                                <div class="">
+                                    <label for="nomeCompleto">Matricula:</label>
+                                    <input type="text" class="focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" name="nomeCompleto" id="">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="bg-white rounded-b-xl rounded-t-2xl border-t-8 border-purple-500 w-full p-4">
                         <div class="flex items-center">
