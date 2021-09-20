@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use  Illuminate\Support\Facades\Schema;
+use Laravel\Fortify\Fortify;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Fortify::loginView(function(){
+        //     return view('welcome');
+        // });
+
+        Fortify::registerView(function(){
+            return view('register');
+        });
         Schema::defaultStringLength(191);
     }
 }

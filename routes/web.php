@@ -17,3 +17,16 @@ Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');
 
+// Route::get('/home', function() {
+//     return view('welcome');
+// });
+
+// Route::get('/formulario', function() {
+//     return view('welcome');
+// });
+
+// Route::get('/criar', function() {
+//     return view('welcome');
+// });
+
+// Route::post('/login', [LoginController::class, "authenticate"]);
