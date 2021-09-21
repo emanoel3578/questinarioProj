@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\QuestionsController;
+use App\Http\Controllers\RespostasController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,9 +21,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::post('/questions', [QuestionsController::class, "store"]);
-
-// Route::post('/questions', [QuestionsController::class, "store"]);
-Route::get('/questions/search/{titulo}', [QuestionsController::class, "search"]);
+Route::post('/respostas', [RespostasController::class, "store"]);    
+Route::get('/questions/form/{nomeFormulario}', [QuestionsController::class, "search"]);
 
 Route::resource('questions', QuestionsController::class);
+
+// Route::resource('respostas', RespostasController::class);
+

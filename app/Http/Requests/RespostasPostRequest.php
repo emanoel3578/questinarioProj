@@ -4,9 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreQuestionRequest extends FormRequest
+class RespostasPostRequest extends FormRequest
 {
-   
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -22,27 +21,28 @@ class StoreQuestionRequest extends FormRequest
      *
      * @return array
      */
-     
     public function rules()
     {
 
         return [
             'nomeFormulario' => 'required|string',
             'titulo' => 'required|string',
-            'descricao' => 'nullable|string',
+            'descricao' => 'nullable|string',        
+            'matricula' => 'required|string',        
+            'nome' => 'required|string',        
             'pergunta' => 'required|string',
             'ndeperguntas' => 'required|string',
             'tipodepergunta' => 'required|string',
-            'opcao1' => 'required|string',
-            'opcao2' => 'nullable|string',
-            'opcao3' => 'nullable|string',
-            'opcao4' => 'nullable|string',
-            'opcao5' => 'nullable|string',
-            'opcao6' => 'nullable|string',
-            'opcao7' => 'nullable|string',
-            'opcao8' => 'nullable|string',
-            'opcao9' => 'nullable|string',
-            'opcao10' => 'nullable|string',
+            'resposta1' => 'required|string',
+            'resposta2' => 'nullable|string',
+            'resposta3' => 'nullable|string',
+            'resposta4' => 'nullable|string',
+            'resposta5' => 'nullable|string',
+            'resposta6' => 'nullable|string',
+            'resposta7' => 'nullable|string',
+            'resposta8' => 'nullable|string',
+            'resposta9' => 'nullable|string',
+            'resposta10' => 'nullable|string',
         ];
     }
 
@@ -54,7 +54,7 @@ class StoreQuestionRequest extends FormRequest
             'titulo.required' => 'O campo Título, é obrigatório',
             'titulo.unique' => 'Já existe um formulário com esse título cadastrado',
             'pergunta.required' => 'O campo pergunta é obrigatório',
-            'opcao1.required' => 'É obrigatório o preenchimento da primeira opção de resposta',
+            'resposta1.required' => 'É obrigatório o preenchimento da primeira resposta',
         ];
     }
 }

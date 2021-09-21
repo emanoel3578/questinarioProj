@@ -10,10 +10,10 @@
                         <div class="flex justify-around items-center">
                             <div>
                                 <p class="text-black text-3xl">
-                                    Titulo do formulario
+                                    {{dataArrMultipla[0].titulo}}
                                 </p>
                                 <p class="text-black text-sm">
-                                    Descricao do formulario
+                                    {{dataArrMultipla[0].descricao}}
                                 </p>
                                 <p class="text-black text-xs">
                                     Autor: Direção
@@ -25,7 +25,7 @@
                                     Data de criação:
                                 </p>
                                 <p class="text-sm">
-                                     21/08/2021
+                                     {{dataArrMultipla[0].created_at.split("T")[0].split("-").reverse().join("/")}}
                                 </p>
                             </div>
                         </div>
@@ -33,96 +33,190 @@
 
                     <div class="bg-white rounded-b-xl rounded-t-2xl border-t-8 border-purple-500 w-full p-4">
                         <div class="flex items-center w-full">
-                            <div class="flex justify-between w-full">
+                            <div class="flex flex-col justify-between w-full">
+                                <div class="flex">
+                                    <div class="">
+                                        <label for="nomeCompleto">Nome completo:</label>
+                                        <input v-model="nomeCompleto" type="text" class="focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" name="nomeCompleto" id="">
+                                    </div>
 
-                                <div class="">
-                                    <label for="nomeCompleto">Nome completo:</label>
-                                    <input type="text" class="focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" name="nomeCompleto" id="">
+                                    <div class="">
+                                        <label for="nomeCompleto">Matricula:</label>
+                                        <input v-model="matricula" type="text" class="focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" name="nomeCompleto" id="">
+                                    </div>
                                 </div>
+                            </div>
+                                
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-b-xl rounded-t-2xl border-t-8 border-purple-500 w-full p-4">
+                        <ul>
+                            <li class="font-semibold text-black">
+                                Para completar com sucesso o seu questionario, preencha cada questão com sua resposta e clique no botão "Responder",
+                                ao final de cada questão. Caso o contrário sua resposta não será aceita.
+                            </li>
+                        </ul>
+                    </div>
 
-                                <div class="">
-                                    <label for="nomeCompleto">Matricula:</label>
-                                    <input type="text" class="focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" name="nomeCompleto" id="">
+                    <div v-if="doneFormulario">
+                        <div class="bg-white rounded-b-xl rounded-t-2xl border-t-8 border-purple-500 w-full p-4">
+                            <div class="text-3xl text-center text-green-600">
+                                Parabéns você completou o formulario
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div v-else>
+                        <div v-for="data in dataArrMultipla" :key="data.id" class="bg-white rounded-b-xl rounded-t-2xl border-t-8 border-purple-500 w-full p-4">
+                            <div class="flex items-center">
+                                <div>
+                                    <p class="text-black text-2xl pergunta">
+                                        {{data.pergunta}}
+                                    </p>
+                                    <div class="flex flex-col gap-3 py-2 respostaMultipla">
+                                        <div v-if="data.opcao1">
+                                            <input type="radio" :value="data.opcao1" name="questaoID">
+                                            <label for="questaoID1">{{data.opcao1}}</label>
+                                        </div>
+                                        <div v-if="data.opcao2">
+                                            <input type="radio" :value="data.opcao2" name="questaoID">
+                                            <label for="questaoID2">{{data.opcao2}}</label>
+                                        </div>
+                                        <div v-if="data.opcao3">
+                                            <input type="radio" :value="data.opcao3" name="questaoID">
+                                            <label for="questaoID3">{{data.opcao3}}</label>
+                                        </div>
+                                        <div v-if="data.opcao4">
+                                            <input type="radio" :value="data.opcao4" name="questaoID">
+                                            <label for="questaoID4">{{data.opcao4}}</label>
+                                        </div>
+                                        <div v-if="data.opcao5">
+                                            <input type="radio" :value="data.opcao5" name="questaoID">
+                                            <label for="questaoID5">{{data.opcao5}}</label>
+                                        </div>
+                                        <div v-if="data.opcao6">
+                                            <input type="radio" :value="data.opcao6" name="questaoID">
+                                            <label for="questaoID6">{{data.opcao6}}</label>
+                                        </div>
+                                        <div v-if="data.opcao7">
+                                            <input type="radio" :value="data.opcao7" name="questaoID">
+                                            <label for="questaoID7">{{data.opcao7}}</label>
+                                        </div>
+                                        <div v-if="data.opcao8">
+                                            <input type="radio" :value="data.opcao8" name="questaoID">
+                                            <label for="questaoID8">{{data.opcao8}}</label>
+                                        </div>
+                                        <div v-if="data.opcao9">
+                                            <input type="radio" :value="data.opcao9" name="questaoID">
+                                            <label for="questaoID9">{{data.opcao9}}</label>
+                                        </div>
+                                        <div v-if="data.opcao10">
+                                            <input type="radio" :value="data.opcao10" name="questaoID">
+                                            <label for="questaoID10">{{data.opcao10}}</label>
+                                        </div>
+                                    </div>
 
+
+                                    <div class="flex justify-end">
+                                        <button @click="createTotalRespostas" class="bg-blue-500 rounded-3xl p-2 text-white">
+                                            Responder !
+                                        </button>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div v-for="data in dataArrParagrafo" :key="data.id" class="bg-white rounded-b-xl rounded-t-2xl border-t-8 border-purple-500 w-full p-4">
+                            <div class="flex items-center respostaParagrafo">
+                                <div>
+                                    <p class="text-black text-2xl ">
+                                        {{data.pergunta}}
+                                    </p>
+                                    <div class="flex flex-col gap-3 py-2">
+                                        <textarea name="respostaParagrafo" class="p-2 border-black border-2 focus:outline-none focus:border-blue-500"  id="" cols="20" rows="5" placeholder="Digite sua resposta">
+                                        </textarea>
+                                    </div>
+
+                                    <div class="flex justify-end">
+                                        <button @click="createTotalRespostas" id="respostaParagrafo" class="bg-blue-500 rounded-3xl p-2 text-white">
+                                            Responder !
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>   
+
+                        <div v-for="data in dataArrCheckbox" :key="data.id" class="bg-white rounded-b-xl rounded-t-2xl border-t-8 border-purple-500 w-full p-4">
+                            <div class="flex items-center">
+                                <div>
+                                    <p class="text-black text-2xl pergunta">
+                                        {{data.pergunta}}
+                                    </p>
+                                    <div class="flex flex-col gap-3 py-2 respostaCheckbox">
+                                        <div v-if="data.opcao1" >
+                                            <input class="respostaCheckbox" :value="data.opcao1" type="checkbox" name="questaoCheckboxID">
+                                            <label for="questaoCheckboxID">{{data.opcao1}}</label>
+                                        </div>
+                                        <div v-if="data.opcao2">
+                                            <input class="respostaCheckbox" :value="data.opcao2"  type="checkbox" name="questaoCheckboxID">
+                                            <label for="questaoCheckboxID">{{data.opcao2}}</label>
+                                        </div>
+                                        <div v-if="data.opcao3">
+                                            <input class="respostaCheckbox" :value="data.opcao3"  type="checkbox" name="questaoCheckboxID">
+                                            <label for="questaoCheckboxID">{{data.opcao3}}</label>
+                                        </div>
+                                        <div v-if="data.opcao4">
+                                            <input class="respostaCheckbox" :value="data.opcao4"  type="checkbox" name="questaoCheckboxID">
+                                            <label for="questaoCheckboxID">{{data.opcao4}}</label>
+                                        </div>
+                                        <div v-if="data.opcao5">
+                                            <input class="respostaCheckbox" :value="data.opcao5"  type="checkbox" name="questaoCheckboxID">
+                                            <label for="questaoCheckboxID">{{data.opcao5}}</label>
+                                        </div>
+                                        <div v-if="data.opcao6">
+                                            <input class="respostaCheckbox" :value="data.opcao6"  type="checkbox" name="questaoCheckboxID">
+                                            <label for="questaoCheckboxID">{{data.opcao6}}</label>
+                                        </div>
+                                        <div v-if="data.opcao7">
+                                            <input class="respostaCheckbox" :value="data.opcao7"  type="checkbox" name="questaoCheckboxID">
+                                            <label for="questaoCheckboxID">{{data.opcao7}}</label>
+                                        </div>
+                                        <div v-if="data.opcao8">
+                                            <input class="respostaCheckbox"  :value="data.opcao8" type="checkbox" name="questaoCheckboxID">
+                                            <label for="questaoCheckboxID">{{data.opcao8}}</label>
+                                        </div>
+                                        <div v-if="data.opcao9">
+                                            <input class="respostaCheckbox" :value="data.opcao9"  type="checkbox" name="questaoCheckboxID">
+                                            <label for="questaoCheckboxID">{{data.opcao9}}</label>
+                                        </div>
+                                        <div v-if="data.opcao10">
+                                            <input class="respostaCheckbox" :value="data.opcao10"  type="checkbox" name="questaoCheckboxID">
+                                            <label for="questaoCheckboxID">{{data.opcao10}}</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex justify-end">
+                                        <button @click="createTotalRespostas" class="bg-blue-500 rounded-3xl p-2 text-white">
+                                            Responder !
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
+
+                        <div v-show="formularioReady" class="bg-white rounded-b-xl rounded-t-2xl border-t-8 border-purple-500 w-full p-4">
+                            <div class="flex justify-center mt-2">
+                                <button @click="sendResposta" class="bg-blue-500 rounded-3xl p-2 text-white">
+                                    Finalizar formulario !
+                                </button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-b-xl rounded-t-2xl border-t-8 border-purple-500 w-full p-4">
-                        <div class="flex items-center">
-                            <div>
-                                <p class="text-black text-2xl">
-                                    Pergunta atual sobre as opçoes
-                                </p>
-                                <div class="flex flex-col gap-3 py-2">
-                                    <div>
-                                        <input type="radio" name="questaoID">
-                                        <label for="questaoID">Opção 1</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="questaoID">
-                                        <label for="questaoID">Opção 1</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="questaoID">
-                                        <label for="questaoID">Opção 1</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="questaoID">
-                                        <label for="questaoID">Opção 1</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="questaoID">
-                                        <label for="questaoID">Opção 1</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
 
-                    <div class="bg-white rounded-b-xl rounded-t-2xl border-t-8 border-purple-500 w-full p-4">
-                        <div class="flex items-center">
-                            <div>
-                                <p class="text-black text-2xl">
-                                    Pergunta atual sobre as opçoes
-                                </p>
-                                <div class="flex flex-col gap-3 py-2">
-                                    <textarea name="respostaParagrafo" class="p-2 border-black border-2 focus:outline-none focus:border-blue-500"  id="" cols="20" rows="5" placeholder="Digite sua resposta">
-                                    </textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>   
 
-                    <div class="bg-white rounded-b-xl rounded-t-2xl border-t-8 border-purple-500 w-full p-4">
-                        <div class="flex items-center">
-                            <div>
-                                <p class="text-black text-2xl">
-                                    Pergunta atual sobre as opçoes
-                                </p>
-                                <div class="flex flex-col gap-3 py-2">
-                                    <div>
-                                        <input type="checkbox" name="questaoCheckboxID">
-                                        <label for="questaoCheckboxID">Opção 1</label>
-                                    </div>
-                                    <div>
-                                        <input type="checkbox" name="questaoCheckboxID">
-                                        <label for="questaoCheckboxID">Opção 1</label>
-                                    </div>
-                                    <div>
-                                        <input type="checkbox" name="questaoCheckboxID">
-                                        <label for="questaoCheckboxID">Opção 1</label>
-                                    </div>
-                                    <div>
-                                        <input type="checkbox" name="questaoCheckboxID">
-                                        <label for="questaoCheckboxID">Opção 1</label>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>  
                                
                 </div>
             </div>
@@ -142,160 +236,156 @@ export default {
             isMultiplaEscolha: true,
             isParagrafo: false,
             isCheckbox: false,
+            dataArrMultipla:[],
+            dataArrParagrafo:[],
+            dataArrCheckbox:[],
+            formularioReady:false,
+            totalRespostas:[],
+            matricula:"",
+            nomeCompleto:"",
+            formData:{
+                email:'emanoel357@gmail.com',
+                password: 'manel123'
+            },
+            doneFormulario:false
         }
     },
 
+    mounted() {
+        axios.get('/sanctum/csrf-cookie').then(response => {
+            axios.post("/login", this.formData).then(response => {})
+            var query = window.location.search.substring(1).replace("%20", " ").replace("form=", "");
+            axios.get('/api/questions/form/' + query).then(res=> {
+                res.data.map((element)=>{
+                    if (element.tipodepergunta == "multipla") {
+                        this.dataArrMultipla.push(element)
+                    }
+
+                    if (element.tipodepergunta == "paragrafo") {
+                        this.dataArrParagrafo.push(element)
+                    }
+
+                    if (element.tipodepergunta == "checkbox") {
+                        this.dataArrCheckbox.push(element)
+                    }
+                })
+            })
+        })
+    },
+
     methods:{
-        respostaType(event) {
-            if (event.target.value == "multipla") {
-                this.isMultiplaEscolha = true
-                this.isParagrafo = false
-                this.isCheckbox = false
-            }else if (event.target.value == "paragrafo") {
-                this.isParagrafo = true
-                this.isMultiplaEscolha = false
-                this.isCheckbox = false
-            }else if (event.target.value == "checkbox") {
-                this.isCheckbox = true
-                this.isParagrafo = false
-                this.isMultiplaEscolha = false
-            }
-        },
 
-        newOption(event){
-            var container = document.createElement('div')
-            container.className = "flex items-center"
-            var inputContainer = document.createElement('input')
-            inputContainer.placeholder = "Resposta"
-            inputContainer.className = "focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest"
-            var imgContainer = document.createElement('img')
-            imgContainer.src = "assets/img/multiplechoice.png"
-            imgContainer.className = "w-5 h-full"
-            var closeContainer = document.createElement('img')
-            closeContainer.src = "assets/img/delete.png"
-            closeContainer.className = "w-12 h-full cursor-pointer deleteResposta"
-
-            container.appendChild(imgContainer)
-            container.appendChild(inputContainer)
-            container.appendChild(closeContainer)
-
-            var placetoPutQuestion = event.target
-            placetoPutQuestion.before(container)
-
-            function deleteInput(e) { 
-                e.path[1].remove()
+        createTotalRespostas(event) {
+            var createResposta = {
+                nome: this.nomeCompleto,
+                matricula: this.matricula,
+                nomeFormulario:'',
+                titulo:'',
+                descricao:'',
+                pergunta:'',
+                ndeperguntas:'1',
+                tipodepergunta:'',
+                resposta1:"",
             }
 
-            document.querySelectorAll(".deleteResposta").forEach(function(element) {
-                element.addEventListener("click", function(e) {deleteInput(e)} )
-            });
+            createResposta.nomeFormulario = this.dataArrMultipla[0].titulo
+            createResposta.titulo = this.dataArrMultipla[0].titulo
+            createResposta.descricao = this.dataArrMultipla[0].descricao
 
-        },
-
-        deleteQuestion() {
-            // Verificar Pure JS,no topo da tag script
-        },
-
-        newPergunta() {
-            var perguntaDivClone = document.getElementsByClassName("perguntaDivClone")[0].cloneNode(true)
-            perguntaDivClone.className = "bg-white rounded-3xl p-4 border-l-8 border-pink-800 perguntaDivClone"
-            document.getElementsByClassName("perguntaDivClone")[document.getElementsByClassName("perguntaDivClone").length - 1].after(perguntaDivClone)
-
-            function cloneOption (e) {
-                document.getElementById("optionCloneErase").className = "justify-center gap-4"
-                var optionClone = document.getElementById("optionCloneErase").cloneNode(true)
-                e.target.before(optionClone)
-                document.getElementById("optionCloneErase").className = "hidden justify-center gap-4"
-
-                function deleteInput(a) { 
-                    a.path[1].remove()
+            if(event.path[3].getElementsByClassName("respostaMultipla").length > 0) {
+                
+                var ele = event.path[3].getElementsByTagName('input')
+                for(var i = 0; i < ele.length; i++) {
+                    if(ele[i].type="radio") {
+                        if(ele[i].checked){
+                            createResposta.resposta1 = ele[i].value
+                        }
+                    }
                 }
-          
-                document.querySelectorAll(".deleteResposta").forEach(function(element) {
-                    element.addEventListener("click", function(e) {deleteInput(e)} )
-                });
+
+                if (createResposta.resposta1 == "") {
+                    alert("Por favor marque uma opção")
+                }
+                createResposta.tipodepergunta = "multipla"
+                createResposta.pergunta = event.path[3].getElementsByClassName("pergunta")[0].outerText;
+
             }
+            if(event.path[3].getElementsByClassName("respostaCheckbox").length > 0) {
+                createResposta.tipodepergunta = "checkbox"
+                var checkboxes = event.path[3].querySelectorAll('.respostaCheckbox:checked')
+
+                for (var i = 0; i < checkboxes.length; i++) {
+                    createResposta[`resposta${i+1}`] = checkboxes[i].value
+                }
+                createResposta.pergunta = event.path[3].getElementsByClassName("pergunta")[0].outerText;
+
+                console.log(createResposta.resposta1)
+
+            }
+            if(event.srcElement.id == "respostaParagrafo") {
+                createResposta.tipodepergunta = "paragrafo"
+                createResposta.pergunta = event.path[2].firstChild.innerText
+                createResposta.resposta1 = event.path[3].getElementsByTagName("textarea")[0].value
+
+            }
+
+            if(this.matricula != "" && this.nomeCompleto != "" && createResposta.resposta1 != "") {
+                if (this.totalRespostas.length < 1) {
+                    this.totalRespostas.push(createResposta)
+
+                    event.target.className = "bg-green-500 rounded-3xl p-2 text-white cursor-default"
+                    event.target.innerHTML = "OK !"
+                }else{
+                    var insertedAlready = false
+                    this.totalRespostas.map((element)=> {
+                        if (element.pergunta == createResposta.pergunta) {
+                            alert("Resposta já inserida")
+                            insertedAlready = true
+                        }
+                    })
+    
+                    if(insertedAlready == false) {
+                        this.totalRespostas.push(createResposta)
+                        event.target.className = "bg-green-500 rounded-3xl p-2 text-white cursor-default"
+                        event.target.innerHTML = "OK !"
+                    }
+                }
+            }else {
+                alert("Complete os campos nome completo e Matricula")
+            }
+
+            var totalquestoes = this.dataArrMultipla.length + this.dataArrParagrafo.length + this.dataArrCheckbox.length
             
-            var newPerguntaAdd = document.getElementsByClassName("addResposta")
-            newPerguntaAdd[newPerguntaAdd.length-1].children[0].addEventListener("click", function(e) {cloneOption(e)} )
-
-            document.querySelectorAll(".deleteCheckbox").forEach(function(element) {
-                element.addEventListener("click", function(e) {deleteCheckbox(e)} )
-            });
-
-            function changeLocalResponseType(i) {
-                if (i.target.value == "multipla") {
-                    i.path[3].getElementsByClassName("multipla")[0].className = "multipla flex flex-col justify-center gap-4 block"
-                    i.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo hidden"
-                    i.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox hidden"
-                    i.path[3].getElementsByClassName("addResposta")[0].className = "addResposta"
-                }else if (i.target.value == "paragrafo") {
-                    i.path[3].getElementsByClassName("multipla")[0].className = "multipla flex-col justify-center gap-4 hidden  "
-                    i.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo block"
-                    i.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox hidden"
-                    i.path[3].getElementsByClassName("addResposta")[0].className = "addResposta hidden"
-                }else if (i.target.value == "checkbox") {
-                    i.path[3].getElementsByClassName("multipla")[0].className = "multipla flex-col justify-center gap-4 hidden "
-                    i.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo hidden"
-                    i.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox block"
-                    i.path[3].getElementsByClassName("addResposta")[0].className = "addResposta hidden"
-                }
+            if(this.totalRespostas.length == totalquestoes) {
+                this.formularioReady = true
+                alert("Você já pode finalizar seu questionario")
             }
 
-            document.querySelectorAll(".selectCopied").forEach((element) => {
-                element.addEventListener("change", (i) => {changeLocalResponseType(i)} )
-            });
+            // console.log(this.totalRespostas)
 
-            function newCheckbox(q) {
-                var checkboxClone = document.getElementsByClassName("checkboxOption")[0].cloneNode(true)
-                var deleteImg = document.createElement("img")
-                deleteImg.src="assets/img/delete.png"
-                deleteImg.className = "w-12 h-full cursor-pointer deleteCheckbox"
-                checkboxClone.appendChild(deleteImg)
-                q.target.before(checkboxClone)
+        },
 
-
-                function deleteCheckbox(h) { 
-                    h.path[1].remove()
+        sendResposta () {
+            let promises = [];
+            let users = [];
+            // console.log(this.totalRespostas)
+            if (this.totalRespostas.length >= 1) {
+                for (var i = 0; i < this.totalRespostas.length; i++) {
+                    promises.push(
+                        axios.post('api/respostas', this.totalRespostas[i]).then(response => {
+                            console.log(response)
+                            users.push(response)
+                        })
+                    )
                 }
 
-                document.querySelectorAll(".deleteCheckbox").forEach(function(element) {
-                    element.addEventListener("click", function(h) {deleteCheckbox(h)} )
+                Promise.all(promises).then(() => {
+                    this.doneFormulario = true
                 });
-
+            }else {
+                alert("Você não salvou nenhum pergunta nesse formulario para o envio.Por favor preencha abaixo")
             }
-
-            document.querySelectorAll(".newCheckbox").forEach(function(element) {
-                element.addEventListener("click", function(q) {newCheckbox(q)} )
-            });
-
-        },
-
-        deletePergunta() {
-            if ((document.getElementsByClassName("perguntaDivClone").length) > 1) {
-                document.getElementsByClassName("perguntaDivClone")[(document.getElementsByClassName("perguntaDivClone").length) - 1].remove()
-            }
-        },
-
-        newCheckbox (event) {
-            var checkboxClone = document.getElementsByClassName("checkboxOption")[0].cloneNode(true)
-            var deleteImg = document.createElement("img")
-            deleteImg.src="assets/img/delete.png"
-            deleteImg.className = "w-12 h-full cursor-pointer deleteCheckbox"
-            checkboxClone.appendChild(deleteImg)
-            event.target.before(checkboxClone)
-
-
-            function deleteCheckbox(e) { 
-                e.path[1].remove()
-            }
-
-            document.querySelectorAll(".deleteCheckbox").forEach(function(element) {
-                element.addEventListener("click", function(e) {deleteCheckbox(e)} )
-            });
-
-        },
-
+        }
     }
 
 }

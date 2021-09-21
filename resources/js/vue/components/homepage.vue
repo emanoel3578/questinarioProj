@@ -25,17 +25,17 @@
             <div class="bg-purple-200 w-full mt-3 flex flex-col items-center justify-center">
                 <div class="bg-purple-200 flex flex-col gap-4 w-full">
 
-                    <div class="bg-white rounded-full w-full p-4">
+                    <div v-for="data in dataArr" :key="data.id" class="bg-white rounded-full w-full p-4">
                         <div class="flex justify-around items-center">
                             <div>
                                 <p class="text-black text-2xl">
-                                    Titulo do formulario
+                                    {{data.titulo}}
                                 </p>
                                 <p class="text-black text-sm">
-                                    Descricao do formulario
+                                    {{data.descricao}}
                                 </p>
                                 <p class="text-black text-xs">
-                                    Autor: Direção
+                                    Autor: {{data.ownerId}}
                                 </p>
                             </div>
 
@@ -55,68 +55,6 @@
                             </div>
                         </div>
                     </div>    
-
-                    <div class="bg-white rounded-full w-full p-4">
-                        <div class="flex justify-around items-center">
-                            <div>
-                                <p class="text-black text-2xl">
-                                    Titulo do formulario 2
-                                </p>
-                                <p class="text-black text-sm">
-                                    Descricao do formulario 2
-                                </p>
-                                <p class="text-black text-xs">
-                                    Autor: Direção
-                                </p>
-                            </div>
-
-                            <div class="text-center">
-                                <p>
-                                    Data de criação:
-                                </p>
-                                <p class="text-sm">
-                                     21/08/2021
-                                </p>
-                            </div>
-
-                            <div class="cursor-pointer text-white bg-blue-500 rounded-full p-2">
-                                <a href="http://questinario.com/formulario">
-                                    Responder !
-                                </a>
-                            </div>
-                        </div>
-                    </div>   
-
-                    <div class="bg-white rounded-full w-full p-4">
-                        <div class="flex justify-around items-center">
-                            <div>
-                                <p class="text-black text-2xl">
-                                    Titulo do formulario 3
-                                </p>
-                                <p class="text-black text-sm">
-                                    Descricao do formulario 3
-                                </p>
-                                <p class="text-black text-xs">
-                                    Autor: Direção
-                                </p>
-                            </div>
-
-                            <div class="text-center">
-                                <p>
-                                    Data de criação:
-                                </p>
-                                <p class="text-sm">
-                                     21/08/2021
-                                </p>
-                            </div>
-
-                            <div class="cursor-pointer text-white bg-blue-500 rounded-full p-2">
-                                <a href="http://questinario.com/formulario">
-                                    Responder !
-                                </a>
-                            </div>
-                        </div>
-                    </div>   
                     
                     <!-- <div class="bg-black">
                         <div class="bg-white absolute rounded-full w-full p-4">
@@ -151,29 +89,54 @@ export default {
             formData:{
                 email: '',
                 password: ''
-            }
-            
+            },
+            dataArr:[]
         }
     },
 
     created() {
         axios.get('/sanctum/csrf-cookie').then(response => {
-            // this.getUser()
+            // axios.get('/api/questions/' + "PESQUISA DE SATISFAÇÃO FATEPI-FAESPI").then(res=> {
+            //     console.log(res)
+            // })
+
+            axios.get('/api/questions').then(res => {
+                var insertedAlready = false
+
+                res.data.map((element) => {
+                    if(this.dataArr.length == 0) {
+                        this.dataArr.push(res.data[0])
+                    }else {
+                        this.dataArr.map((el) => {
+                            if (el.titulo == element.titulo) {
+                                insertedAlready = true
+                            }
+                        })
+
+                        if (insertedAlready == false ) {
+                            insertedAlready = false
+                            this.dataArr.push(element)
+                        }
+                    }
+                })
+
+                console.log(this.dataArr)
+            })
         })
     },      
 
     methods:{
-        getUser () {
-            axios.get('/api/user').then(response => {
-                console.log(response.data)
-            })
-        },
+        // getUser () {
+        //     axios.get('/api/user').then(response => {
+        //         console.log(response.data)
+        //     })
+        // },
 
-        handleLogin () {
-            axios.post('/login', this.formData).then(response => {
-                this.getUser();
-            })
-        },
+        // handleLogin () {
+        //     axios.post('/login', this.formData).then(response => {
+        //         this.getUser();
+        //     })
+        // },
 
     }
 
