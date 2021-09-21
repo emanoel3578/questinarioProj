@@ -5,7 +5,7 @@
         <div class="flex justify-around items-center mt-3">
             <div class="flex justify-between text-center space-x-3 items-center">
                 <img :src="'assets/img/form.png'" alt="">
-                <span class="text-2xl">Formulário sem nome</span>
+                <span class="text-2xl">{{this.ownerName}}</span>
             </div>
 
             <div class="flex justify-end ">
@@ -61,7 +61,7 @@
                         <!-- Corpo do formualario -->
 
                         <!-- Div que apareçe para o usuario -->
-                        <div v-for="id in idQuestions" :key="idQuestions.id"  id="perguntaDivOriginal" class="bg-white relative rounded-3xl p-4 border-l-8 border-pink-800 mb-5 infoFormulario">
+                        <div v-for="id in idQuestions" :key="id.id"  id="perguntaDivOriginal" class="bg-white relative rounded-3xl p-4 border-l-8 border-pink-800 mb-5 infoFormulario">
                             <div class="flex flex-col px-4">
                                 <div class="flex justify-between pb-4 gap-4 w-full">
                                     <div class="flex flex-col w-full">
@@ -89,11 +89,11 @@
                                     <div class="flex items-center" id="option">
                                         <img :src="'assets/img/multiplechoice.png'" class="w-5 h-full" alt="">
                                         <input class="w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Resposta">
-                                        <img v-show="errorOpcao1" :src="'assets/img/error.png'" class="ml-2 w-6 h-6" alt="">
+                                        <img v-show="errorOpcao1Multipla" :src="'assets/img/error.png'" class="ml-2 w-6 h-6" alt="">
                                     </div>
 
                                     <div class="font-bold text-red-500 pl-6 text-sm">
-                                        {{errorOpcao1}}
+                                        {{errorOpcao1Multipla}}
                                     </div>
                                     
                                     <div class="addResposta" aria-label="Adicionar opção de resposta" data-balloon-pos="down-left">
@@ -108,6 +108,10 @@
                                         <textarea class="border-2 border-black w-1/2 p-2 rounded-xl" placeholder="Digite a resposta em forma de texto">
                                         </textarea>
                                     </div>
+
+                                    <div class="font-bold text-red-500 pl-6 text-sm">
+                                        {{errorOpcao1Paragrafo}}
+                                    </div>
                                 </div> 
 
 
@@ -117,6 +121,11 @@
                                         <input id="option" class="focus:outline-none" type="checkbox">
                                         <input class="focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Opcao">
                                     </div>
+
+                                    <div class="font-bold text-red-500 pl-6 text-sm">
+                                        {{errorOpcao1Checkbox}}
+                                    </div>
+
                                     <div>
                                         <img @click="newCheckbox" :src="'assets/img/plus.png'" class="cursor-pointer w-6 mt-8" alt="">
                                     </div>
@@ -474,20 +483,15 @@ export default {
             infoFormulario: [],
             formData:{
                 email:'emanoel357@gmail.com',
-                password: 'Manel123'
+                password: 'manel123'
             },
-            createFormulario:{
-                nomeFormulario:'',
-                titulo:'',
-                descricao:'',
-                pergunta:'',
-                ndeperguntas:'1',
-                tipodepergunta:'',
-                ownerId:'',
-            },
+            ownerId:'',
+            ownerName:'',
             errorTitulo:'',
             errorPergunta:'',
-            errorOpcao1:'',
+            errorOpcao1Multipla:'',
+            errorOpcao1Paragrafo:'',
+            errorOpcao1Checkbox:'',
             totalFormulario: [],
             idQuestions: [
                 {
@@ -518,15 +522,16 @@ export default {
                 pergunta:'',
                 ndeperguntas:'1',
                 tipodepergunta:'',
-                ownerId:'',
+                ownerId: this.ownerId,
             }
             var dataHtml = document.getElementsByClassName("infoFormulario")
             for(var i=0; i < dataHtml.length; i++) {
                 if (i==0) {
                     var titleAndDescription = dataHtml[i].getElementsByTagName('input')
+
                     createFormulario.nomeFormulario = titleAndDescription[0].value
                     createFormulario.titulo = titleAndDescription[0].value
-                    createFormulario.descricao = titleAndDescription[0].value
+                    createFormulario.descricao = titleAndDescription[1].value
                 }
             }
 
@@ -536,24 +541,10 @@ export default {
             var selected = select[0].selectedOptions
             createFormulario.tipodepergunta = selected[0].value
 
-
-            for(var i=0; i < event.path[2].getElementsByTagName('input').length; i++) {
-                if (event.path[2].getElementsByTagName('input')[i].value != "" && event.path[2].getElementsByTagName('input')[i].value != "on" && event.path[2].getElementsByTagName('input')[i].placeholder != "Insira sua pergunta"){
-                    createFormulario[`opcao${i}`] = event.path[2].getElementsByTagName('input')[i].value
-                }
-            }
-
-
             if(createFormulario.titulo == "") {
                 this.errorTitulo = "O campo Titulo do Formulário, é obrigatório"
             }else {
                 this.errorTitulo = ""
-            }
-
-            if ( event.path[2].getElementsByTagName('input')[1].value == ""){
-                this.errorOpcao1 = "É obrigatório o preenchimento da primeira opção de resposta"
-            }else {
-                this.errorOpcao1 = ""
             }
 
             if (createFormulario.pergunta == "") {
@@ -562,18 +553,63 @@ export default {
                 this.errorPergunta = ""
             }
 
+            if (createFormulario.tipodepergunta == "multipla") {
+
+                if ( event.path[2].getElementsByTagName('input')[1].value == ""){
+                    this.errorOpcao1Multipla = "É obrigatório o preenchimento da primeira opção de resposta"
+                }else {
+                    this.errorOpcao1Multipla = ""
+                    var counter = 0
+                    for(var i=0; i < event.path[2].getElementsByTagName('input').length; i++) {
+                        if (event.path[2].getElementsByTagName('input')[i].value != "" && event.path[2].getElementsByTagName('input')[i].value != "on" && event.path[2].getElementsByTagName('input')[i].placeholder != "Insira sua pergunta" && event.path[2].getElementsByTagName('input')[i].placeholder == "Resposta"){
+                            counter = counter + 1
+                            createFormulario[`opcao${counter}`] = event.path[2].getElementsByTagName('input')[i].value
+                        }
+                    }
+                }
+            }
+
+            if(createFormulario.tipodepergunta == "paragrafo") {
+                createFormulario.opcao1 =  "textarea"
+            }
+
+            if(createFormulario.tipodepergunta == "checkbox") {
+                if ( event.path[2].getElementsByTagName('input')[3].value == ""){
+                    this.errorOpcao1Checkbox = "É obrigatório o preenchimento da primeira opção de checkbox para resposta"
+                }else {
+                    this.errorOpcao1Checkbox = ""
+                    var counter = 0
+                    for(var i=0; i < event.path[2].getElementsByTagName('input').length; i++) {
+                        if (event.path[2].getElementsByTagName('input')[i].value != "" && event.path[2].getElementsByTagName('input')[i].value != "on" && event.path[2].getElementsByTagName('input')[i].placeholder != "Insira sua pergunta" && event.path[2].getElementsByTagName('input')[i].placeholder == "Opcao"){
+                            counter = counter + 1
+                            createFormulario[`opcao${counter}`] = event.path[2].getElementsByTagName('input')[i].value
+                        }
+                    }
+                }
+
+            }
+
             if (createFormulario.pergunta != "" && createFormulario.opcao1 != "" && createFormulario.titulo != "") {
 
                 if(this.totalFormulario.length < 1) {
                     this.totalFormulario.push(createFormulario)
+
+                    event.target.className = "bg-green-500 rounded-3xl p-2 text-white cursor-default"
+                    event.target.innerHTML = "OK !"
                 }else {
+                    var insertedAlready = false
                     this.totalFormulario.map((element)=> {
                         if (element.pergunta == createFormulario.pergunta) {
                             alert("Pergunta já inserida, insira outra por favor.")
-                        }else {
-                            this.totalFormulario.push(createFormulario)
+                            insertedAlready = true
                         }
                     })
+
+                    if(insertedAlready == false) {
+                        this.totalFormulario.push(createFormulario)
+                        event.target.className = "bg-green-500 rounded-3xl p-2 text-white cursor-default"
+                        event.target.innerHTML = "OK !"
+                    }
                 }
             }
             console.log(this.totalFormulario)
@@ -582,7 +618,7 @@ export default {
         sendFormularios () {
             let promises = [];
             let users = [];
-            console.log(this.totalFormulario.length)
+            
             if (this.totalFormulario.length >= 1) {
                 for (var i = 0; i < this.totalFormulario.length; i++) {
                     promises.push(
@@ -601,7 +637,8 @@ export default {
 
         getUser () {
             axios.get('/api/user').then(res => {
-                this.createFormulario.ownerId = res.data.id
+                this.ownerId = res.data.id
+                this.ownerName = res.data.name
             }).catch(function (error){
                 if (error.response) {
                 // Request made and server responded
@@ -684,32 +721,38 @@ export default {
         },
 
         newOption(event){
-            var container = document.createElement('div')
-            container.className = "flex items-center"
-            var inputContainer = document.createElement('input')
-            inputContainer.placeholder = "Resposta"
-            inputContainer.className = "focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest"
-            var imgContainer = document.createElement('img')
-            imgContainer.src = "assets/img/multiplechoice.png"
-            imgContainer.className = "w-5 h-full"
-            var closeContainer = document.createElement('img')
-            closeContainer.src = "assets/img/delete.png"
-            closeContainer.className = "w-12 h-full cursor-pointer deleteResposta"
 
-            container.appendChild(imgContainer)
-            container.appendChild(inputContainer)
-            container.appendChild(closeContainer)
-
-            var placetoPutQuestion = event.target
-            placetoPutQuestion.before(container)
-
-            function deleteInput(e) { 
-                e.path[1].remove()
+            var arrCounteOptions = Array.from(event.path[3].getElementsByClassName("deleteResposta"))
+            if (arrCounteOptions.length < 9) {
+                var container = document.createElement('div')
+                container.className = "flex items-center"
+                var inputContainer = document.createElement('input')
+                inputContainer.placeholder = "Resposta"
+                inputContainer.className = "focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest"
+                var imgContainer = document.createElement('img')
+                imgContainer.src = "assets/img/multiplechoice.png"
+                imgContainer.className = "w-5 h-full"
+                var closeContainer = document.createElement('img')
+                closeContainer.src = "assets/img/delete.png"
+                closeContainer.className = "w-12 h-full cursor-pointer deleteResposta"
+    
+                container.appendChild(imgContainer)
+                container.appendChild(inputContainer)
+                container.appendChild(closeContainer)
+    
+                var placetoPutQuestion = event.target
+                placetoPutQuestion.before(container)
+    
+                function deleteInput(e) { 
+                    e.path[1].remove()
+                }
+    
+                document.querySelectorAll(".deleteResposta").forEach(function(element) {
+                    element.addEventListener("click", function(e) {deleteInput(e)} )
+                });
+            }else {
+                alert("Numero maximo de opcoes atingido")
             }
-
-            document.querySelectorAll(".deleteResposta").forEach(function(element) {
-                element.addEventListener("click", function(e) {deleteInput(e)} )
-            });
 
         },
 
@@ -718,9 +761,9 @@ export default {
         },
 
         newPergunta() {
-            var lastId = this.idQuestions[this.idQuestions.length - 1].id
+            var lastId = this.idQuestions[this.idQuestions.length - 1].id + 1
             this.idQuestions.push({
-                id: lastId++
+                id: lastId
             })
 
             // var perguntaDivClone = document.getElementsByClassName("perguntaDivClone")[0].cloneNode(true)
