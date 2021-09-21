@@ -21,10 +21,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/respostas', [RespostasController::class, "store"]);    
+// Route::post('/respostas', [RespostasController::class, "store"]);
 Route::get('/questions/form/{nomeFormulario}', [QuestionsController::class, "search"]);
 
 Route::resource('questions', QuestionsController::class);
 
-// Route::resource('respostas', RespostasController::class);
+
+Route::get('/respostas/{nome}', [RespostasController::class, "search"]);
+
+Route::resource('respostas', RespostasController::class);
 

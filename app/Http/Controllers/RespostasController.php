@@ -15,7 +15,7 @@ class RespostasController extends Controller
      */
     public function index()
     {
-        //
+        return Respostas::all();
     }
 
     /**
@@ -82,5 +82,16 @@ class RespostasController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Sarch the specified name.
+     *
+     * @param  string  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function search($nome)
+    {
+        return Respostas::where('nomeFormulario', $nome)->get();
     }
 }

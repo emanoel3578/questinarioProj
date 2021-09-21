@@ -250,10 +250,10 @@
                                 <!-- Summary -->
                                 <div v-show="resumoShow" class="flex flex-col gap-6 mb-8">
                                     <!-- Perguntas -->
-                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
+                                    <divclass="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
                                         <div class="pb-6">
                                             <div class="text-2xl">
-                                                A pergunta em si 1 
+                                               PERGUNTA
                                             </div>
 
                                             <div class="text-sm">
@@ -265,22 +265,6 @@
                                             <div>
                                                 <apexchart width="380" type="donut" :options="chartOptions" :series="series"></apexchart>
                                             </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
-                                        <div class="pb-6">
-                                            <div class="text-2xl">
-                                                A pergunta em si 1 
-                                            </div>
-
-                                            <div class="text-sm">
-                                                O tanto de respostas para essa pergunta
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            Grafico
                                         </div>
                                     </div>
                                 </div>
@@ -325,26 +309,18 @@
                                 <div v-show="individualShow" class="flex flex-col gap-6 mb-8">
                                     <!-- Individuais -->
                                     <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
-                                        <div class="flex justify-center items-center">
+                                        <div class="flex justify-center gap-2 items-center">
 
-                                            <div class="flex items-center pt-2">
-                                                <div>
-                                                    Pesquisar:
-                                                </div>
-
-                                                <div>
-                                                    <input type="text" class="focus:border-black focus:outline-none border-b-2 px-3 text-grey-darkest">
-                                                </div>
+                                            <div class="flex items-start text-center pt-2">
+                                                Pesquisar:
                                             </div>
 
-                                            <div class="flex">
+                                            <div class="flex items-center">
                                                 <div>
-                                                    <select name="" id="">
-                                                        <option value="">Rafael Oliveira dos Santos</option>
-                                                        <option value="">Iury Oliveira</option>
-                                                        <option value="">Julia Passos Neves</option>
-                                                        <option value="">Camila Moura da Silva</option>
-                                                        <option value="">Emanoel Cardoso Pereira</option>
+                                                    <select @change="getFormForUser" name="" id="">
+                                                        <option v-for="data in nomesLista" :key="data.id" value="">
+                                                            {{data}}
+                                                        </option>
                                                     </select>
                                                         
                                                 </div>
@@ -363,7 +339,7 @@
                                             </div>
 
                                             <div class="text-2xl">
-                                                Titulo do formulario
+                                                {{}}
                                             </div>
                                             
                                             <div class="text-sm">
@@ -498,7 +474,9 @@ export default {
                     id:1
                 },
             ],
-            counter:0
+            counter:0,
+            nomesLista:[],
+            perguntas:[],
 
         }
     },
@@ -510,9 +488,43 @@ export default {
                 this.getUser();
             })
         })
+
+        axios.get("/api/respostas").then(res => {
+            // res.data.map(element => {
+                
+            // })
+            
+
+            res.data.map(element => {
+                var isAlready = false
+                if(this.nomesLista.length < 0) {
+                    this.nomesLista.push(element)
+                }else{
+                    this.nomesLista.map(el => {
+                        if(el == element.nome) {
+                            isAlready = true
+                        }
+                    })
+
+                    if (isAlready != true) {
+                        this.nomesLista.push(element.nome)
+                    }
+                }
+            })
+
+            console.log(this.nomesLista)
+        })
     },   
 
     methods:{
+
+        getFormForUser(event) {
+
+            console.log(event)
+            // axios.get("api/respostas/" + event.).then(element => {
+            //     console.log(element)
+            // })
+        },
 
         createTotalFormulario (event) {
             var createFormulario = {
