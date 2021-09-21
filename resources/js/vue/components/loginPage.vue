@@ -87,18 +87,22 @@ export default {
     },
 
     created() {
+        
         axios.get('/sanctum/csrf-cookie').then(response => {})
     },
 
     methods:{
         getUser () {
             axios.get('/api/user').then(res => {
-                    // do good things
-            }).catch(error)
+                    console.log(res.data)
+            }).catch((error) => {
+                console.log(error);
+            })
         },
 
         handleLogin () {
             axios.post('/login', this.formData).then(response => {
+                console.log(this.formData)
                 this.getUser();
             })
         },

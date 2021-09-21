@@ -9,7 +9,7 @@
             </div>
 
             <div class="flex justify-end ">
-                <div @click="sendFormulario" class='cursor-pointer bg-purple-400 rounded-full p-2 '>
+                <div @click="sendFormularios" class='cursor-pointer bg-purple-400 rounded-full p-2 '>
                     Enviar formulario
                 </div>
             </div>
@@ -20,7 +20,7 @@
             </div>
     </div>
 
-        <!-- Body -->
+    <!-- Body -->
     <div class="bg-purple-200 min-h-screen">
         <div class="bg-purple-200 flex flex-col w-1/2 mx-auto my-0 items-center">
             <div class="bg-purple-200 w-full mt-3 flex flex-col items-center justify-center">
@@ -31,8 +31,17 @@
                         <div class="flex w-full ">
                             <div class="bg-white flex border-t-8 border-blue-500 justify-between rounded-3xl p-4 w-full">
                                 <div class="flex flex-col text-2xl w-full infoFormulario">
-                                    <input class="text-2xl w-1/2 focus:border-black focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Título">
-                                    <input class="text-lg focus:border-black focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Descrição">
+                                    <div class="flex items-end">
+                                        <input class="text-2xl w-1/2 focus:border-black focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Título">
+                                        <img v-show="errorTitulo" :src="'assets/img/error.png'" class="ml-2 w-6 h-6" alt="">
+                                    </div>
+                                    <div class="font-bold pt-2 text-red-500 pl-6 text-sm">
+                                        {{errorTitulo}}
+                                    </div>
+
+                                    <div class="flex items-end">
+                                        <input class="text-lg focus:border-black focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Descrição">
+                                    </div>
                                 </div>
                             </div>
 
@@ -52,12 +61,21 @@
                         <!-- Corpo do formualario -->
 
                         <!-- Div que apareçe para o usuario -->
-                        <div id="perguntaDivOriginal" class="bg-white relative rounded-3xl p-4 border-l-8 border-pink-800 mb-5 infoFormulario">
+                        <div v-for="id in idQuestions" :key="idQuestions.id"  id="perguntaDivOriginal" class="bg-white relative rounded-3xl p-4 border-l-8 border-pink-800 mb-5 infoFormulario">
                             <div class="flex flex-col px-4">
-                                <div class="flex pb-4 gap-4">
-                                    <input class="focus:border-black w-full focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Insira sua pergunta">
+                                <div class="flex justify-between pb-4 gap-4 w-full">
+                                    <div class="flex flex-col w-full">
+                                        <div class="flex w-full">
+                                            <input class="focus:border-black w-full focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Insira sua pergunta">
+                                            <img v-show="errorPergunta" :src="'assets/img/error.png'" class="ml-2 w-6 h-6" alt="">
+                                        </div>
+
+                                        <div class="font-bold pt-2 text-red-500 pl-6 text-sm">
+                                            {{errorPergunta}}
+                                        </div>
+                                    </div>
                                 
-                                    <select @change="respostaType" class="rounded-full border-2 border-blue-500 focus:outline-none p-2" name="tipoQuestao" id="tipoQuestao">
+                                    <select @change="changeLocalResponseType" class="rounded-full border-2 border-blue-500 focus:outline-none p-2" name="tipoQuestao" id="tipoQuestao">
                                         <option selected class="text-center" value="multipla">Multipla escolha</option>
                                         <option class="text-center" value="paragrafo">Paragrafo</option>
                                         <option class="text-center" value="checkbox">Checkbox</option>
@@ -67,10 +85,15 @@
 
                                 <!-- Respostas para Multiplaescolha -->
                                 
-                                <div v-show="isMultiplaEscolha" class="flex flex-col justify-center gap-4">
+                                <div class="flex flex-col justify-center gap-4 multipla">
                                     <div class="flex items-center" id="option">
                                         <img :src="'assets/img/multiplechoice.png'" class="w-5 h-full" alt="">
                                         <input class="w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Resposta">
+                                        <img v-show="errorOpcao1" :src="'assets/img/error.png'" class="ml-2 w-6 h-6" alt="">
+                                    </div>
+
+                                    <div class="font-bold text-red-500 pl-6 text-sm">
+                                        {{errorOpcao1}}
                                     </div>
                                     
                                     <div class="addResposta" aria-label="Adicionar opção de resposta" data-balloon-pos="down-left">
@@ -80,7 +103,7 @@
 
 
                                 <!-- Respostas para Paragráfo-->
-                                <div v-show="isParagrafo">
+                                <div class="paragrafo hidden">
                                     <div>
                                         <textarea class="border-2 border-black w-1/2 p-2 rounded-xl" placeholder="Digite a resposta em forma de texto">
                                         </textarea>
@@ -89,7 +112,7 @@
 
 
                                 <!-- Resposta para Checkbox -->
-                                <div v-show="isCheckbox" class="flex flex-col gap-1">
+                                <div class="flex flex-col gap-1 checkbox hidden">
                                     <div class="flex items-center space-x-2 checkboxOption">
                                         <input id="option" class="focus:outline-none" type="checkbox">
                                         <input class="focus:border-black w-1/2 focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Opcao">
@@ -100,14 +123,12 @@
                                 </div>
 
                                 <div class="absolute bottom-5 right-5">
-                                    <button @click="sendFormulario" class="bg-blue-500 rounded-3xl p-2 text-white">
+                                    <button @click="createTotalFormulario" class="bg-blue-500 rounded-3xl p-2 text-white">
                                         Salvar !
                                     </button>
                                 </div>
                             </div>
                         </div>
-
-
 
                         <!-- Div escondida para clonagem, o usuario não altera ela -->
                         <div id="perguntaDiv" class="bg-white rounded-3xl p-4 border-l-8 border-pink-800 perguntaDivClone infoFormulario hidden">
@@ -452,7 +473,7 @@ export default {
             individualShow:false,
             infoFormulario: [],
             formData:{
-                email:'emanoel97@hotmail.com',
+                email:'emanoel357@gmail.com',
                 password: 'Manel123'
             },
             createFormulario:{
@@ -463,88 +484,124 @@ export default {
                 ndeperguntas:'1',
                 tipodepergunta:'',
                 ownerId:'',
-            }
+            },
+            errorTitulo:'',
+            errorPergunta:'',
+            errorOpcao1:'',
+            totalFormulario: [],
+            idQuestions: [
+                {
+                    id:1
+                },
+            ],
+            counter:0
+
         }
     },
 
+
     created() {
-        axios.get('/sanctum/csrf-cookie').then(response => {})
+        axios.get('/sanctum/csrf-cookie').then(response => {
+            axios.post('/login', this.formData).then(response => {
+                this.getUser();
+            })
+        })
     },   
 
     methods:{
 
-        sendFormulario (event) {
-            // console.log(event.path[2].getElementsByTagName('input'))
-            
+        createTotalFormulario (event) {
+            var createFormulario = {
+                nomeFormulario:'',
+                titulo:'',
+                descricao:'',
+                pergunta:'',
+                ndeperguntas:'1',
+                tipodepergunta:'',
+                ownerId:'',
+            }
             var dataHtml = document.getElementsByClassName("infoFormulario")
             for(var i=0; i < dataHtml.length; i++) {
                 if (i==0) {
                     var titleAndDescription = dataHtml[i].getElementsByTagName('input')
-                    this.createFormulario.nomeFormulario = titleAndDescription[0].value
-                    this.createFormulario.titulo = titleAndDescription[0].value
-                    this.createFormulario.descricao = titleAndDescription[0].value
+                    createFormulario.nomeFormulario = titleAndDescription[0].value
+                    createFormulario.titulo = titleAndDescription[0].value
+                    createFormulario.descricao = titleAndDescription[0].value
                 }
             }
 
-            this.createFormulario.pergunta = event.path[2].getElementsByTagName('input')[0].value
+            createFormulario.pergunta = event.path[2].getElementsByTagName('input')[0].value
+
+            var select = event.path[2].getElementsByTagName('select')
+            var selected = select[0].selectedOptions
+            createFormulario.tipodepergunta = selected[0].value
+
+
             for(var i=0; i < event.path[2].getElementsByTagName('input').length; i++) {
                 if (event.path[2].getElementsByTagName('input')[i].value != "" && event.path[2].getElementsByTagName('input')[i].value != "on" && event.path[2].getElementsByTagName('input')[i].placeholder != "Insira sua pergunta"){
-                    this.createFormulario[`opcao${i}`] = event.path[2].getElementsByTagName('input')[i].value
+                    createFormulario[`opcao${i}`] = event.path[2].getElementsByTagName('input')[i].value
                 }
             }
 
-            console.log(this.createFormulario)
-            // console.log(nomePergunta)
-            // var dataHtml = document.getElementsByClassName("infoFormulario")
-            // var inputsTotal = [];
-            // var select = document.getElementById('tipoQuestao');
-            // var counter = 0
-            // // console.log(select)
-            // for(var i=0; i < dataHtml.length; i++) {
-                
-            //     if (i==0) {
-            //         var titleAndDescription = dataHtml[i].getElementsByTagName('input')
-            //         this.createFormulario.nomeFormulario = titleAndDescription[0].value
-            //         this.createFormulario.titulo = titleAndDescription[0].value
-            //         this.createFormulario.descricao = titleAndDescription[0].value
-            //         // console.log(this.createFormulario)
-            //     }
 
-            //     if (i == 2) {
-            //         continue
-            //     }
+            if(createFormulario.titulo == "") {
+                this.errorTitulo = "O campo Titulo do Formulário, é obrigatório"
+            }else {
+                this.errorTitulo = ""
+            }
 
-            //     if (i >= 1) {
-            //         var select = dataHtml[i].getElementsByTagName('select')
-            //         var selected = select[0].selectedOptions
-            //         // selected[0].value == "multipla"
-            //         // console.log(dataHtml[i].getElementsByTagName('input'))
-            //         var emptyArr = []
-            //         inputsTotal.push(emptyArr)
-            //         inputsTotal[counter].push(dataHtml[i].getElementsByTagName('input'))
-            //         // inputsTotal[counter].push(dataHtml[i].getElementsByTagName('input'))
-            //         // console.log(inputsTotal)
-            //         counter++
-            //     }
-                
+            if ( event.path[2].getElementsByTagName('input')[1].value == ""){
+                this.errorOpcao1 = "É obrigatório o preenchimento da primeira opção de resposta"
+            }else {
+                this.errorOpcao1 = ""
+            }
 
-            // }
+            if (createFormulario.pergunta == "") {
+                this.errorPergunta = "O campo pergunta é obrigatório"
+            }else {
+                this.errorPergunta = ""
+            }
 
-            // var CleanedInput = []
-            // // console.log(inputsTotal)
-            // for(var a=0; a < inputsTotal.length; a++) {
-            //     console.log(inputsTotal[a][0])
-            // }
-            // // axios.post('/api/question', this.createFormulario).then(res=>{
+            if (createFormulario.pergunta != "" && createFormulario.opcao1 != "" && createFormulario.titulo != "") {
 
-            // // })
+                if(this.totalFormulario.length < 1) {
+                    this.totalFormulario.push(createFormulario)
+                }else {
+                    this.totalFormulario.map((element)=> {
+                        if (element.pergunta == createFormulario.pergunta) {
+                            alert("Pergunta já inserida, insira outra por favor.")
+                        }else {
+                            this.totalFormulario.push(createFormulario)
+                        }
+                    })
+                }
+            }
+            console.log(this.totalFormulario)
+        },
+
+        sendFormularios () {
+            let promises = [];
+            let users = [];
+            console.log(this.totalFormulario.length)
+            if (this.totalFormulario.length >= 1) {
+                for (var i = 0; i < this.totalFormulario.length; i++) {
+                    promises.push(
+                        axios.post('api/questions', this.totalFormulario[i]).then(response => {
+                            console.log(response)
+                            users.push(response)
+                        })
+                    )
+                }
+
+                Promise.all(promises).then(() => console.log(users));
+            }else {
+                alert("Você não salvou nenhum pergunta nesse formulario para o envio.Por favor preencha abaixo")
+            }
         },
 
         getUser () {
             axios.get('/api/user').then(res => {
-                ownerId = res.data.id
-
-
+                this.createFormulario.ownerId = res.data.id
             }).catch(function (error){
                 if (error.response) {
                 // Request made and server responded
@@ -561,10 +618,26 @@ export default {
             })
         },
 
-        handleLogin () {
-            axios.post('/login', this.formData).then(response => {
-                this.getUser();
-            })
+        changeLocalResponseType(event) {
+            var select = event.path[3].getElementsByTagName('select')[0]
+            var selected = select.selectedOptions
+
+            if (selected[0].value == "multipla") {
+                event.path[3].getElementsByClassName("multipla")[0].className = "multipla flex flex-col justify-center gap-4 block"
+                event.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo hidden"
+                event.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox hidden"
+                event.path[3].getElementsByClassName("addResposta")[0].className = "addResposta"
+            }else if (selected[0].value == "paragrafo") {
+                event.path[3].getElementsByClassName("multipla")[0].className = "multipla flex-col justify-center gap-4 hidden  "
+                event.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo block"
+                event.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox hidden"
+                event.path[3].getElementsByClassName("addResposta")[0].className = "addResposta hidden"
+            }else if (selected[0].value == "checkbox") {
+                event.path[3].getElementsByClassName("multipla")[0].className = "multipla flex-col justify-center gap-4 hidden "
+                event.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo hidden"
+                event.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox block"
+                event.path[3].getElementsByClassName("addResposta")[0].className = "addResposta hidden"
+            }
         },
 
         changeShowDiv(event) {
@@ -645,84 +718,94 @@ export default {
         },
 
         newPergunta() {
-            var perguntaDivClone = document.getElementsByClassName("perguntaDivClone")[0].cloneNode(true)
-            perguntaDivClone.className = "bg-white rounded-3xl p-4 border-l-8 border-pink-800 perguntaDivClone infoFormulario"
-            document.getElementsByClassName("perguntaDivClone")[document.getElementsByClassName("perguntaDivClone").length - 1].after(perguntaDivClone)
+            var lastId = this.idQuestions[this.idQuestions.length - 1].id
+            this.idQuestions.push({
+                id: lastId++
+            })
 
-            function cloneOption (e) {
-                document.getElementById("optionCloneErase").className = "justify-center gap-4"
-                var optionClone = document.getElementById("optionCloneErase").cloneNode(true)
-                e.target.before(optionClone)
-                document.getElementById("optionCloneErase").className = "hidden justify-center gap-4"
+            // var perguntaDivClone = document.getElementsByClassName("perguntaDivClone")[0].cloneNode(true)
+            // perguntaDivClone.className = "bg-white rounded-3xl p-4 border-l-8 border-pink-800 perguntaDivClone infoFormulario"
+            // document.getElementsByClassName("perguntaDivClone")[document.getElementsByClassName("perguntaDivClone").length - 1].after(perguntaDivClone)
 
-                function deleteInput(a) { 
-                    a.path[1].remove()
-                }
+            // function cloneOption (e) {
+            //     document.getElementById("optionCloneErase").className = "justify-center gap-4"
+            //     var optionClone = document.getElementById("optionCloneErase").cloneNode(true)
+            //     e.target.before(optionClone)
+            //     document.getElementById("optionCloneErase").className = "hidden justify-center gap-4"
+
+            //     function deleteInput(a) { 
+            //         a.path[1].remove()
+            //     }
           
-                document.querySelectorAll(".deleteResposta").forEach(function(element) {
-                    element.addEventListener("click", function(e) {deleteInput(e)} )
-                });
-            }
+            //     document.querySelectorAll(".deleteResposta").forEach(function(element) {
+            //         element.addEventListener("click", function(e) {deleteInput(e)} )
+            //     });
+            // }
             
-            var newPerguntaAdd = document.getElementsByClassName("addResposta")
-            newPerguntaAdd[newPerguntaAdd.length-1].children[0].addEventListener("click", function(e) {cloneOption(e)} )
+            // var newPerguntaAdd = document.getElementsByClassName("addResposta")
+            // newPerguntaAdd[newPerguntaAdd.length-1].children[0].addEventListener("click", function(e) {cloneOption(e)} )
 
-            document.querySelectorAll(".deleteCheckbox").forEach(function(element) {
-                element.addEventListener("click", function(e) {deleteCheckbox(e)} )
-            });
+            // document.querySelectorAll(".deleteCheckbox").forEach(function(element) {
+            //     element.addEventListener("click", function(e) {deleteCheckbox(e)} )
+            // });
 
-            function changeLocalResponseType(i) {
-                if (i.target.value == "multipla") {
-                    i.path[3].getElementsByClassName("multipla")[0].className = "multipla flex flex-col justify-center gap-4 block"
-                    i.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo hidden"
-                    i.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox hidden"
-                    i.path[3].getElementsByClassName("addResposta")[0].className = "addResposta"
-                }else if (i.target.value == "paragrafo") {
-                    i.path[3].getElementsByClassName("multipla")[0].className = "multipla flex-col justify-center gap-4 hidden  "
-                    i.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo block"
-                    i.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox hidden"
-                    i.path[3].getElementsByClassName("addResposta")[0].className = "addResposta hidden"
-                }else if (i.target.value == "checkbox") {
-                    i.path[3].getElementsByClassName("multipla")[0].className = "multipla flex-col justify-center gap-4 hidden "
-                    i.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo hidden"
-                    i.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox block"
-                    i.path[3].getElementsByClassName("addResposta")[0].className = "addResposta hidden"
-                }
-            }
+            // function changeLocalResponseType(i) {
+            //     if (i.target.value == "multipla") {
+            //         i.path[3].getElementsByClassName("multipla")[0].className = "multipla flex flex-col justify-center gap-4 block"
+            //         i.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo hidden"
+            //         i.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox hidden"
+            //         i.path[3].getElementsByClassName("addResposta")[0].className = "addResposta"
+            //     }else if (i.target.value == "paragrafo") {
+            //         i.path[3].getElementsByClassName("multipla")[0].className = "multipla flex-col justify-center gap-4 hidden  "
+            //         i.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo block"
+            //         i.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox hidden"
+            //         i.path[3].getElementsByClassName("addResposta")[0].className = "addResposta hidden"
+            //     }else if (i.target.value == "checkbox") {
+            //         i.path[3].getElementsByClassName("multipla")[0].className = "multipla flex-col justify-center gap-4 hidden "
+            //         i.path[3].getElementsByClassName("paragrafo")[0].className = "paragrafo hidden"
+            //         i.path[3].getElementsByClassName("checkbox")[0].className = "flex flex-col gap-1 checkbox block"
+            //         i.path[3].getElementsByClassName("addResposta")[0].className = "addResposta hidden"
+            //     }
+            // }
 
-            document.querySelectorAll(".selectCopied").forEach((element) => {
-                element.addEventListener("change", (i) => {changeLocalResponseType(i)} )
-            });
+            // document.querySelectorAll(".selectCopied").forEach((element) => {
+            //     element.addEventListener("change", (i) => {changeLocalResponseType(i)} )
+            // });
 
-            function newCheckbox(q) {
-                var checkboxClone = document.getElementsByClassName("checkboxOption")[0].cloneNode(true)
-                var deleteImg = document.createElement("img")
-                deleteImg.src="assets/img/delete.png"
-                deleteImg.className = "w-12 h-full cursor-pointer deleteCheckbox"
-                checkboxClone.appendChild(deleteImg)
-                q.target.before(checkboxClone)
+            // function newCheckbox(q) {
+            //     var checkboxClone = document.getElementsByClassName("checkboxOption")[0].cloneNode(true)
+            //     var deleteImg = document.createElement("img")
+            //     deleteImg.src="assets/img/delete.png"
+            //     deleteImg.className = "w-12 h-full cursor-pointer deleteCheckbox"
+            //     checkboxClone.appendChild(deleteImg)
+            //     q.target.before(checkboxClone)
 
 
-                function deleteCheckbox(h) { 
-                    h.path[1].remove()
-                }
+            //     function deleteCheckbox(h) { 
+            //         h.path[1].remove()
+            //     }
 
-                document.querySelectorAll(".deleteCheckbox").forEach(function(element) {
-                    element.addEventListener("click", function(h) {deleteCheckbox(h)} )
-                });
+            //     document.querySelectorAll(".deleteCheckbox").forEach(function(element) {
+            //         element.addEventListener("click", function(h) {deleteCheckbox(h)} )
+            //     });
 
-            }
+            // }
 
-            document.querySelectorAll(".newCheckbox").forEach(function(element) {
-                element.addEventListener("click", function(q) {newCheckbox(q)} )
-            });
+            // document.querySelectorAll(".newCheckbox").forEach(function(element) {
+            //     element.addEventListener("click", function(q) {newCheckbox(q)} )
+            // });
 
         },
 
         deletePergunta() {
-            if ((document.getElementsByClassName("perguntaDivClone").length) > 1) {
-                document.getElementsByClassName("perguntaDivClone")[(document.getElementsByClassName("perguntaDivClone").length) - 1].remove()
+
+            if (this.idQuestions.length > 1) {
+                this.idQuestions.pop()
             }
+
+            // if ((document.getElementsByClassName("perguntaDivClone").length) > 1) {
+            //     document.getElementsByClassName("perguntaDivClone")[(document.getElementsByClassName("perguntaDivClone").length) - 1].remove()
+            // }
         },
 
         newCheckbox (event) {
