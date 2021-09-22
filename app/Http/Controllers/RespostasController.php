@@ -92,6 +92,17 @@ class RespostasController extends Controller
      */
     public function search($nome)
     {
-        return Respostas::where('nomeFormulario', $nome)->get();
+        return Respostas::where('nome', $nome)->get();
+    }
+
+    /**
+     * Sarch the specified name.
+     *
+     * @param  string  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function searchFormulario($nomeFormulario)
+    {
+        return Respostas::where('nomeFormulario', $nomeFormulario)->get();
     }
 }

@@ -26,8 +26,9 @@ Route::get('/questions/form/{nomeFormulario}', [QuestionsController::class, "sea
 
 Route::resource('questions', QuestionsController::class);
 
-
 Route::get('/respostas/{nome}', [RespostasController::class, "search"]);
+
+Route::get('/respostas/form/{nomeFormulario}', [RespostasController::class, "searchFormulario"]);
 
 Route::resource('respostas', RespostasController::class);
 

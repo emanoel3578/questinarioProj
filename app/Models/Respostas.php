@@ -11,6 +11,7 @@ class Respostas extends Model
     protected $fillable = [
         'nomeFormulario',
         'titulo',
+        'ownerId',
         'matricula',
         'nome',
         'descricao',

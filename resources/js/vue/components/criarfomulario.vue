@@ -9,7 +9,7 @@
             </div>
 
             <div class="flex justify-end ">
-                <div @click="sendFormularios" class='cursor-pointer bg-purple-400 rounded-full p-2 '>
+                <div @click="sendFormularios" class='text-white cursor-pointer bg-purple-400 rounded-full p-2 '>
                     Enviar formulario
                 </div>
             </div>
@@ -32,7 +32,7 @@
                             <div class="bg-white flex border-t-8 border-blue-500 justify-between rounded-3xl p-4 w-full">
                                 <div class="flex flex-col text-2xl w-full infoFormulario">
                                     <div class="flex items-end">
-                                        <input class="text-2xl w-1/2 focus:border-black focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Título">
+                                        <input class="text-2xl focus:border-black focus:outline-none border-b-2 py-2 px-3 text-grey-darkest" type="text" placeholder="Título">
                                         <img v-show="errorTitulo" :src="'assets/img/error.png'" class="ml-2 w-6 h-6" alt="">
                                     </div>
                                     <div class="font-bold pt-2 text-red-500 pl-6 text-sm">
@@ -230,13 +230,9 @@
                                     </div>
 
                                     <div>
-                                        <div class="flex justify-between px-4 pb-2">
+                                        <div class="flex justify-around px-4 pb-2">
                                             <div class="border-b-2 border-purple-800">
                                                 <span @click="changeShowRepostasTab" class="cursor-pointer">Resumo</span>
-                                            </div>
-
-                                            <div class="border-b-2 border-purple-800">
-                                                <span @click="changeShowRepostasTab" class="cursor-pointer">Por questão</span>
                                             </div>
 
                                             <div class="border-b-2 border-purple-800">
@@ -250,14 +246,35 @@
                                 <!-- Summary -->
                                 <div v-show="resumoShow" class="flex flex-col gap-6 mb-8">
                                     <!-- Perguntas -->
-                                    <divclass="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
+
+                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
+                                        <div class="flex justify-center gap-2 items-center">
+                                            <div class="flex items-start text-center pt-2">
+                                                Formularios: 
+                                            </div>
+
+                                            <div class="flex items-center">
+                                                <div>
+                                                    <select @change="getSelectedFormulario" name="" id="">
+                                                        <option selected disabled value="">Escolha a baixo:</option>
+                                                        <option v-for="formulario in formulariosResumo" :key="formulario.id" value="">
+                                                            {{formulario}}
+                                                        </option>
+                                                    </select>  
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div v-for="el in resumoForm" class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-4 w-full">
                                         <div class="pb-6">
                                             <div class="text-2xl">
-                                               PERGUNTA
+                                               {{el.pergunta}}
                                             </div>
 
                                             <div class="text-sm">
-                                                O tanto de respostas para essa pergunta
+                                                O gráfico representa a porcetagem de respostas para essa pergunta
                                             </div>
                                         </div>
 
@@ -318,6 +335,7 @@
                                             <div class="flex items-center">
                                                 <div>
                                                     <select @change="getFormForUser" name="" id="">
+                                                        <option selected disabled value="">Escolha a baixo:</option>
                                                         <option v-for="data in nomesLista" :key="data.id" value="">
                                                             {{data}}
                                                         </option>
@@ -329,101 +347,212 @@
                                         </div>
                                     </div>
 
+
+                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
+                                        <div class="flex justify-center gap-2 items-center">
+                                            <div class="flex items-start text-center pt-2">
+                                                Formularios: 
+                                            </div>
+
+                                            <div class="flex items-center">
+                                                <div>
+                                                    <select @change="getSelectedFormulario" name="" v-model="selectedOptionIndividual">
+                                                        <option selected disabled value="">Escolha a baixo:</option>
+                                                        <option v-for="formulario in nomesFormularios" :key="formulario.id" value="">
+                                                            {{formulario}}
+                                                        </option>
+                                                    </select>
+                                                        
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <!-- Formulario no individual -->
-                                
-                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
-                                        <div class="p-4 gap-1">
+                                    <div class="gap-6 flex flex-col" v-if="selectedFormulario">
+                                        <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
+                                            <div class="p-4 gap-1">
 
-                                            <div class="text-xs text-gray-700">
-                                                Repostas não podem ser editadas
-                                            </div>
+                                                <div class="text-xs text-gray-700">
+                                                    Repostas não podem ser editadas
+                                                </div>
 
-                                            <div class="text-2xl">
-                                                {{}}
-                                            </div>
-                                            
-                                            <div class="text-sm">
-                                                Descriçao do Formulario Descriçao do Formulario Descriçao do Formulario Descriçao do Formulario
+                                                <div class="text-2xl">
+                                                    {{currentTituloForm}}
+                                                </div>
+                                                
+                                                <div class="text-sm">
+                                                    {{currentDescriptionForm}}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
-                                        <!-- Questão de multipla escolha -->
-                                        <div class="p-4">
-                                            <div>
-                                                Titulo da questão
+                                        <div v-for="el in questionsMultipla" :key="el.id" class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
+                                            <!-- Questão de multipla escolha -->
+                                            <div class="p-4">
+                                                <div>
+                                                    {{el.pergunta}}
+                                                </div>
+                                                
+                                                <div>
+                                                    <div class="flex flex-col py-2">
+                                                        <div>
+                                                            <span class="mt-2 text-green-700">
+                                                                {{el.resposta1}}
+                                                            </span>
+                                                        </div>
+
+                                                        <div>
+                                                            <span class="mt-2 text-green-700">
+                                                                {{el.resposta2}}
+                                                            </span>
+                                                        </div>
+
+                                                        <div>
+                                                            <span class="mt-2 text-green-700">
+                                                                {{el.resposta3}}
+                                                            </span>
+                                                        </div>
+
+                                                        <div>
+                                                            <span class="mt-2 text-green-700">
+                                                                {{el.resposta4}}
+                                                            </span>
+                                                        </div>
+
+                                                        <div>
+                                                            <span class="mt-2 text-green-700">
+                                                                {{el.resposta5}}
+                                                            </span>
+                                                        </div>
+
+                                                        <div>
+                                                            <span class="mt-2 text-green-700">
+                                                                {{el.resposta6}}
+                                                            </span>
+                                                        </div>
+
+                                                        <div>
+                                                            <span class="mt-2 text-green-700">
+                                                                {{el.resposta7}}
+                                                            </span>
+                                                        </div>
+
+                                                        <div>
+                                                            <span class="mt-2 text-green-700">
+                                                                {{el.resposta8}}
+                                                            </span>
+                                                        </div>
+
+                                                        <div>
+                                                            <span class="mt-2 text-green-700">
+                                                                {{el.resposta9}}
+                                                            </span>
+                                                        </div>
+
+                                                        <div>
+                                                            <span class="mt-2 text-green-700">
+                                                                {{el.resposta10}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            
-                                            <div>
+                                        </div>
+
+                                        <!-- Questão de paragráfo -->
+                                        <div v-for="el in questionsParagrafo" :key="el.id" class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
+                                            <div class="p-4">
+                                                <p class="text-black text-3xl">
+                                                    {{el.pergunta}}
+                                                </p>
                                                 <div class="flex flex-col gap-3 py-2">
-                                                    <div>
-                                                        <input type="radio" name="questaoID">
-                                                        <label for="questaoID">Opção 1</label>
-                                                    </div>
-                                                    <div>
-                                                        <input type="radio" name="questaoID">
-                                                        <label for="questaoID">Opção 1</label>
-                                                    </div>
-                                                    <div>
-                                                        <input type="radio" name="questaoID">
-                                                        <label for="questaoID">Opção 1</label>
-                                                    </div>
-                                                    <div>
-                                                        <input type="radio" name="questaoID">
-                                                        <label for="questaoID">Opção 1</label>
-                                                    </div>
-                                                    <div>
-                                                        <input type="radio" name="questaoID">
-                                                        <label for="questaoID">Opção 1</label>
-                                                    </div>
+                                                    <textarea :value="el.resposta1" disabled name="respostaParagrafo" class="p-2 border-black border-2 focus:outline-none focus:border-blue-500" disabled id="" cols="20" rows="5" placeholder="Digite sua resposta">
+                                                    </textarea>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Questão de paragráfo -->
-                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
-                                        <div class="p-4">
-                                            <p class="text-black text-2xl">
-                                                Pergunta atual sobre as opçoes
-                                            </p>
-                                            <div class="flex flex-col gap-3 py-2">
-                                                <textarea name="respostaParagrafo" class="p-2 border-black border-2 focus:outline-none focus:border-blue-500" disabled id="" cols="20" rows="5" placeholder="Digite sua resposta">
-                                                </textarea>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <!-- Questão de Checkbox  -->
+                                        <div v-for="el in questionsCheckbox" :key="el.id" class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
+                                            <div class="p-4">
+                                                <p class="text-black text-2xl">
+                                                    {{el.pergunta}}
+                                                </p>
+                                                <div class="flex flex-col text-green-500 py-2">
+                                                    <div>
+                                                        <span>
+                                                            {{el.resposta1}}
+                                                        </span>
+                                                    </div>
 
-                                    <!-- Questão de Checkbox  -->
-                                    <div class="bg-white flex flex-col border-t-8 border-blue-500 rounded-3xl p-2 w-full">
-                                        <div class="p-4">
-                                            <p class="text-black text-2xl">
-                                                Pergunta atual sobre as opçoes
-                                            </p>
-                                            <div class="flex flex-col gap-3 py-2">
-                                                <div>
-                                                    <input type="checkbox" name="questaoCheckboxID">
-                                                    <label for="questaoCheckboxID">Opção 1</label>
-                                                </div>
-                                                <div>
-                                                    <input type="checkbox" name="questaoCheckboxID">
-                                                    <label for="questaoCheckboxID">Opção 1</label>
-                                                </div>
-                                                <div>
-                                                    <input type="checkbox" name="questaoCheckboxID">
-                                                    <label for="questaoCheckboxID">Opção 1</label>
-                                                </div>
-                                                <div>
-                                                    <input type="checkbox" name="questaoCheckboxID">
-                                                    <label for="questaoCheckboxID">Opção 1</label>
-                                                </div>
+                                                    <div>
+                                                        <span>
+                                                            {{el.resposta2}}
+                                                        </span>
+                                                    </div>
 
+                                                    <div>
+                                                        <span>
+                                                            {{el.resposta3}}
+                                                        </span>
+                                                    </div>
+
+                                                    <div>
+                                                        <span>
+                                                            {{el.resposta4}}
+                                                        </span>
+                                                    </div>
+
+                                                    <div>
+                                                        <span>
+                                                            {{el.resposta5}}
+                                                        </span>
+                                                    </div>
+
+                                                    <div>
+                                                        <span>
+                                                            {{el.resposta6}}
+                                                        </span>
+                                                    </div>
+
+                                                    <div>
+                                                        <span>
+                                                            {{el.resposta7}}
+                                                        </span>
+                                                    </div>
+
+                                                    <div>
+                                                        <span>
+                                                            {{el.resposta8}}
+                                                        </span>
+                                                    </div>
+
+                                                    <div>
+                                                        <span>
+                                                            {{el.resposta9}}
+                                                        </span>
+                                                    </div>
+
+                                                    <div>
+                                                        <span>
+                                                            {{el.resposta10}}
+                                                        </span>
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div v-if="successfulCreateForm" class="bg-white flex flex-col border-t-8 border-green-600 rounded-3xl p-2 w-full">
+                        <div class="text-3xl text-center text-green-600">
+                            Você enviou um novo formulário com sucesso
                         </div>
                     </div>
                 </div>
@@ -442,6 +571,7 @@ export default {
     data () {
         return {
             chartOptions: {
+                labels: ['Apple', 'Mango', 'Orange', 'Watermelon'],
                 theme:{
                     palette: "palette3"
                 }
@@ -459,7 +589,7 @@ export default {
             infoFormulario: [],
             formData:{
                 email:'emanoel357@gmail.com',
-                password: 'manel123'
+                password: 'Manel123'
             },
             ownerId:'',
             ownerName:'',
@@ -477,7 +607,17 @@ export default {
             counter:0,
             nomesLista:[],
             perguntas:[],
-
+            nomesFormularios:[],
+            selectedFormulario:false,
+            questionsCheckbox: [],
+            questionsMultipla: [],
+            questionsParagrafo: [],
+            currentTituloForm: "",
+            currentDescriptionForm: "",
+            formulariosResumo:[],
+            resumoForm:[],
+            successfulCreateForm:false,
+            selectedOptionIndividual:null,
         }
     },
 
@@ -493,7 +633,6 @@ export default {
             // res.data.map(element => {
                 
             // })
-            
 
             res.data.map(element => {
                 var isAlready = false
@@ -512,18 +651,71 @@ export default {
                 }
             })
 
-            console.log(this.nomesLista)
+            // console.log(this.nomesLista)
         })
     },   
 
     methods:{
 
         getFormForUser(event) {
+            this.selectedOptionIndividual = 0
+            var optionValue = event.target.value;
+            var optionText = event.target.options[event.target.options.selectedIndex].text;
+            
+            axios.get("api/respostas/" + optionText).then(res => {
+                this.nomesFormularios = []
+                res.data.map(element => {
+                    
+                    var isAlready = false
+                    if(this.nomesFormularios.length < 0) {
+                        this.nomesFormularios.push(element.nomeFormulario)
+                    }else{
+                        this.nomesFormularios.map(el => {
+                            if(el == element.nomeFormulario) {
+                                isAlready = true
+                            }
+                        })
 
-            console.log(event)
-            // axios.get("api/respostas/" + event.).then(element => {
-            //     console.log(element)
-            // })
+                        if (isAlready != true) {
+                            this.nomesFormularios.push(element.nomeFormulario)
+                        }
+                    }
+                })
+                // console.log(this.nomesFormularios)
+            })
+        },
+
+        getSelectedFormulario (event) {
+            
+            var optionValue = event.target.value;
+            var optionText = event.target.options[event.target.options.selectedIndex].text;
+
+            axios.get("api/respostas/form/" + optionText).then(res=>{
+                this.selectedFormulario = true
+                
+                this.questionsMultipla = [];
+                this.questionsParagrafo = [];
+                this.questionsCheckbox = [];
+
+                this.resumoForm = res.data
+                res.data.map(element => {
+                    this.currentDescriptionForm = element.descricao
+                    this.currentTituloForm = element.titulo
+
+                    if (element.tipodepergunta == "multipla") {
+                        this.questionsMultipla.push(element)
+                    }
+
+                    if (element.tipodepergunta == "paragrafo") {
+                        this.questionsParagrafo.push(element)
+                    }
+
+                    if (element.tipodepergunta == "checkbox") {
+                        this.questionsCheckbox.push(element)
+                    }
+                })
+                console.log(this.resumoForm)
+            })
         },
 
         createTotalFormulario (event) {
@@ -641,7 +833,14 @@ export default {
                     )
                 }
 
-                Promise.all(promises).then(() => console.log(users));
+                Promise.all(promises).then(() => {
+                    this.idQuestions = this.idQuestions.slice(0,1)
+                    this.successfulCreateForm = true
+                })
+
+                setTimeout(() => {
+                    this.successfulCreateForm = false
+                },4000)
             }else {
                 alert("Você não salvou nenhum pergunta nesse formulario para o envio.Por favor preencha abaixo")
             }
@@ -697,16 +896,36 @@ export default {
                 this.questionShow = false;
                 this.respostaShow = true;
             }
+
+            axios.get("api/respostas").then(element => {
+                
+                element.data.map(element=> {
+                    var isAlready = false
+                    if(this.formulariosResumo.length < 0) {
+                        this.formulariosResumo.push(element.nomeFormulario)
+                    }else{
+                        this.formulariosResumo.map(el => {
+                            if(el == element.nomeFormulario) {
+                                isAlready = true
+                            }
+                        })
+                        if (isAlready != true) {
+                            this.formulariosResumo.push(element.nomeFormulario)
+                        }
+                    }
+                })
+
+                console.log(this.formulariosResumo)
+
+            })
+
+
         },
 
         changeShowRepostasTab(event) {
             if (event.target.innerHTML == "Resumo") {
                 this.resumoShow = true
                 this.porQuestaoShow = false
-                this.individualShow = false
-            }else if (event.target.innerHTML == "Por questão"){
-                this.resumoShow =false
-                this.porQuestaoShow = true
                 this.individualShow = false
             }else if (event.target.innerHTML == "Individual") {
                 this.resumoShow = false

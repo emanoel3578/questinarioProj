@@ -5,12 +5,14 @@
         <div class="flex justify-around items-center mt-3">
             <div class="flex justify-between text-center space-x-3 items-center">
                 <img :src="'assets/img/form.png'" alt="">
-                <span class="text-2xl">Formulário sem nome</span>
+                <span class="text-2xl">Fatepi / Faespi</span>
             </div>
 
             <div class="flex justify-end ">
-                <div class='bg-purple-400 rounded-full p-2 cursor-pointer'>
+                <div class=' text-white bg-purple-400 rounded-full p-2 cursor-pointer'>
+                <a href="http://questionario.com/loginPage">
                     Login
+                </a>
                 </div>
             </div>
         </div>
@@ -25,10 +27,10 @@
             <div class="bg-purple-200 w-full mt-3 flex flex-col items-center justify-center">
                 <div class="bg-purple-200 flex flex-col gap-4 w-full">
 
-                    <div v-for="data in dataArr" :key="data.id" class="bg-white rounded-full w-full p-4">
-                        <div class="flex justify-around items-center">
-                            <div>
-                                <p class="text-black text-2xl">
+                    <div v-for="data in dataArr" :key="data.id" class="bg-white rounded-full p-4">
+                        <div class="flex items-center">
+                            <div class="w-1/2 text-center">
+                                <p class="text-black text-2xl w-full">
                                     {{data.titulo}}
                                 </p>
                                 <p class="text-black text-sm">
@@ -39,18 +41,18 @@
                                 </p>
                             </div>
 
-                            <div class="text-center">
+                            <div class="w-1/2 text-center">
                                 <p>
                                     Data de criação:
                                 </p>
                                 <p class="text-sm">
-                                     21/08/2021
+                                    {{data.created_at.split("T")[0].split("-").reverse().join("/")}}
                                 </p>
                             </div>
 
-                            <div class="cursor-pointer text-white bg-blue-500 rounded-full p-2">
-                                <a href="http://questinario.com/formulario">
-                                    Responder !
+                            <div class="cursor-pointer text-white ">
+                                <a class="bg-blue-500 rounded-full p-2 flex flex-col items-center justify-center" :href="'http://questionario.com/formulario?form=' + data.nomeFormulario">
+                                    Responder
                                 </a>
                             </div>
                         </div>
@@ -96,9 +98,6 @@ export default {
 
     created() {
         axios.get('/sanctum/csrf-cookie').then(response => {
-            // axios.get('/api/questions/' + "PESQUISA DE SATISFAÇÃO FATEPI-FAESPI").then(res=> {
-            //     console.log(res)
-            // })
 
             axios.get('/api/questions').then(res => {
                 var insertedAlready = false
@@ -126,17 +125,6 @@ export default {
     },      
 
     methods:{
-        // getUser () {
-        //     axios.get('/api/user').then(response => {
-        //         console.log(response.data)
-        //     })
-        // },
-
-        // handleLogin () {
-        //     axios.post('/login', this.formData).then(response => {
-        //         this.getUser();
-        //     })
-        // },
 
     }
 

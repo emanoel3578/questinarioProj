@@ -10,10 +10,10 @@
                         <div class="flex justify-around items-center">
                             <div>
                                 <p class="text-black text-3xl">
-                                    {{dataArrMultipla[0].titulo}}
+                                    {{tituloForm}}
                                 </p>
                                 <p class="text-black text-sm">
-                                    {{dataArrMultipla[0].descricao}}
+                                    {{descricaoForm}}
                                 </p>
                                 <p class="text-black text-xs">
                                     Autor: Direção
@@ -25,7 +25,7 @@
                                     Data de criação:
                                 </p>
                                 <p class="text-sm">
-                                     {{dataArrMultipla[0].created_at.split("T")[0].split("-").reverse().join("/")}}
+                                     {{timeCreatedAt}}
                                 </p>
                             </div>
                         </div>
@@ -69,7 +69,7 @@
                     
                     <div v-else>
                         <div v-for="data in dataArrMultipla" :key="data.id" class="bg-white rounded-b-xl rounded-t-2xl border-t-8 border-purple-500 w-full p-4">
-                            <div class="flex items-center">
+                            <div class="">
                                 <div>
                                     <p class="text-black text-2xl pergunta">
                                         {{data.pergunta}}
@@ -128,7 +128,7 @@
                         </div>
 
                         <div v-for="data in dataArrParagrafo" :key="data.id" class="bg-white rounded-b-xl rounded-t-2xl border-t-8 border-purple-500 w-full p-4">
-                            <div class="flex items-center respostaParagrafo">
+                            <div class="flex flex-col respostaParagrafo">
                                 <div>
                                     <p class="text-black text-2xl ">
                                         {{data.pergunta}}
@@ -196,7 +196,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="flex justify-end">
+                                    <div class="flex justify-end w-full">
                                         <button @click="createTotalRespostas" class="bg-blue-500 rounded-3xl p-2 text-white">
                                             Responder !
                                         </button>
@@ -247,7 +247,10 @@ export default {
                 email:'emanoel357@gmail.com',
                 password: 'manel123'
             },
-            doneFormulario:false
+            doneFormulario:false,
+            tituloForm:"",
+            descricaoForm:"",
+            timeCreatedAt:"",
         }
     },
 
@@ -257,6 +260,9 @@ export default {
             var query = window.location.search.substring(1).replace("%20", " ").replace("form=", "");
             axios.get('/api/questions/form/' + query).then(res=> {
                 res.data.map((element)=>{
+                    this.tituloForm = element.titulo
+                    this.descricaoForm = element.descricao
+                    this.timeCreatedAt = element.created_at.split("T")[0].split("-").reverse().join("/")
                     if (element.tipodepergunta == "multipla") {
                         this.dataArrMultipla.push(element)
                     }

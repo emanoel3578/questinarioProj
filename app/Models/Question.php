@@ -11,6 +11,7 @@ class Question extends Model
     protected $fillable = [
         'nomeFormulario',
         'titulo',
+        'ownerId',
         'descricao',
         'pergunta',
         'ndeperguntas',

@@ -27,7 +27,8 @@ class RespostasPostRequest extends FormRequest
         return [
             'nomeFormulario' => 'required|string',
             'titulo' => 'required|string',
-            'descricao' => 'nullable|string',        
+            'descricao' => 'nullable|string',      
+            'ownerId' => 'nullable|string',      
             'matricula' => 'required|string',        
             'nome' => 'required|string',        
             'pergunta' => 'required|string',
